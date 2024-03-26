@@ -91,7 +91,7 @@ fun FirstTimeScreen(navController: NavController) {
             )
 
             Box(modifier = Modifier.weight(1f)) {
-                ComposeHorizontalPager()
+                ComposeHorizontalPager(pagerState)
             }
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Row(
@@ -148,9 +148,7 @@ val textList: MutableList<FirstScreenText> = mutableListOf(
 )
 
 @OptIn(ExperimentalFoundationApi::class) @Composable
-fun ComposeHorizontalPager() {
-    val pagerState = rememberPagerState( pageCount = { textList.size } )
-
+fun ComposeHorizontalPager(pagerState: PagerState) {
     HorizontalPager(state = pagerState) {
         Box(
             modifier = Modifier
