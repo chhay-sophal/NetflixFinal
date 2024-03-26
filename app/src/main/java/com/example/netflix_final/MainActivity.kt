@@ -1,8 +1,10 @@
 package com.example.netflix_final
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -14,11 +16,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.netflix_final.screens.FirstTimeScreen
+import com.example.netflix_final.screens.HomeScreen
 import com.example.netflix_final.screens.SignInScreen
 import com.example.netflix_final.screens.WhoIsWatchingScreen
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -35,6 +39,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ComposeNavScreen() {
     val navController = rememberNavController()
@@ -48,6 +53,9 @@ fun ComposeNavScreen() {
         }
         composable("who-is-watching") {
             WhoIsWatchingScreen(navController = navController)
+        }
+        composable("home") {
+            HomeScreen(navController = navController)
         }
 //        composable(
 //            "detail/{movieName}",
