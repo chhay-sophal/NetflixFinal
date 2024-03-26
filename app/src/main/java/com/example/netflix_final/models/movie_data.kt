@@ -5,10 +5,10 @@ import androidx.annotation.RequiresApi
 import java.time.Duration
 import java.time.Year
 
-data class MovieModel(val name: String, val des: String, val year: Year, val duration: Duration, val image: String)
+data class MovieModel(val title: String, val description: String, val year: Year, val duration: Duration, val image: String)
 
 @RequiresApi(Build.VERSION_CODES.O)
-val movieList1: MutableList<MovieModel> = mutableListOf(
+val movieList: MutableList<MovieModel> = mutableListOf(
     MovieModel("Spider-Man: Into the Spider-Verse", "Teen Miles Morales becomes the Spider-Man of his universe, and must join with five spider-powered individuals from other dimensions to stop a threat for all realities.", Year.of(2018), Duration.ofMinutes(117), "https://www.themoviedb.org/t/p/original/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg"),
     MovieModel("The Dark Knight", "When the menace known as The Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham. The Dark Knight must accept one of the greatest psychological and physical tests of his ability to fight injustice.", Year.of(2008), Duration.ofMinutes(152), "https://www.themoviedb.org/t/p/original/1hRoyzDtpgMU7Dz4JF22RANzQO7.jpg"),
     MovieModel("Avengers: Endgame", "After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.", Year.of(2019), Duration.ofMinutes(181), "https://www.themoviedb.org/t/p/original/q6725aR8Zs4IwGMXzZT8aC8lh41.jpg"),
