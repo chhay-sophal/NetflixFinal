@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.netflix_final.screens.FirstTimeScreen
 import com.example.netflix_final.screens.SignInScreen
+import com.example.netflix_final.screens.WhoIsWatchingScreen
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
 
 class MainActivity : ComponentActivity() {
@@ -44,6 +45,9 @@ fun ComposeNavScreen() {
         }
         composable("sign-in") {
             SignInScreen(navController = navController)
+        }
+        composable("who-is-watching") {
+            WhoIsWatchingScreen(navController = navController)
         }
 //        composable(
 //            "detail/{movieName}",

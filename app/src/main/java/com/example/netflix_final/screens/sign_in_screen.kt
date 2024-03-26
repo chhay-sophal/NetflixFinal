@@ -87,6 +87,7 @@ fun SignInScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(10.dp))
 
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -94,7 +95,14 @@ fun SignInScreen(navController: NavController) {
                         .background(Color.Red, shape = RoundedCornerShape(5.dp)),
                     contentAlignment = Alignment.CenterStart
                 ) {
-                    Text(text = "Sign In", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Normal, modifier = Modifier.align(Alignment.Center))
+                    Button(
+                        onClick = { navController.navigate("who-is-watching") },
+                        colors = ButtonDefaults.buttonColors(Color.Transparent),
+                        shape = RoundedCornerShape(0.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = "Sign In", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Normal)
+                    }
                 }
 
                 Box(
