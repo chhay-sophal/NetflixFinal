@@ -22,8 +22,11 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Face
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -112,17 +115,17 @@ fun FirstTimeScreen(navController: NavController) {
                     .padding(20.dp)
                     .fillMaxWidth()
                     .height(40.dp),
-                contentAlignment = Alignment.BottomCenter
+                contentAlignment = Alignment.Center
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.Red)
-                        .padding(10.dp),
-                    contentAlignment = Alignment.Center,
+                Button(
+                    onClick = { navController.navigate("sign-in") },
+                    colors = ButtonDefaults.buttonColors(Color.Red),
+                    shape = RoundedCornerShape(0.dp),
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = "SIGN IN", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Light)
+                    Text(text = "SIGN IN", color = Color.White)
                 }
+
             }
         }
     }
@@ -130,7 +133,7 @@ fun FirstTimeScreen(navController: NavController) {
 
 @Preview(showSystemUi = true)
 @Composable
-fun Preview() {
+fun FirstScreenPreview() {
     FirstTimeScreen(navController = rememberNavController());
 }
 

@@ -10,12 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.netflix_final.screens.FirstTimeScreen
+import com.example.netflix_final.screens.SignInScreen
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,6 +41,9 @@ fun ComposeNavScreen() {
     NavHost(navController = navController, startDestination = "first-screen") {
         composable("first-screen") {
             FirstTimeScreen(navController = navController)
+        }
+        composable("sign-in") {
+            SignInScreen(navController = navController)
         }
 //        composable(
 //            "detail/{movieName}",
