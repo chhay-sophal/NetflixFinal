@@ -83,7 +83,7 @@ fun WhoIsWatchingScreen(navController: NavController) {
                 .padding(50.dp),
             contentAlignment = Alignment.Center
         ) {
-            ComposeLazyVerticalGridFix()
+            ComposeLazyVerticalGridFix(navController)
         }
     }
 }
@@ -105,7 +105,7 @@ private val userList: MutableList<UserModel> = mutableListOf(
 )
 
 @Composable
-fun ComposeLazyVerticalGridFix() {
+fun ComposeLazyVerticalGridFix(navController: NavController) {
     val isLastRowWithOneItem = userList.size % 2 != 0
     if (isLastRowWithOneItem) {
         Column() {
