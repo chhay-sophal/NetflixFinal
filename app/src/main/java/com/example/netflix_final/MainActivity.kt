@@ -10,6 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.netflix_final.screens.FirstTimeScreen
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,10 +28,29 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    ComposeNavScreen()
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ComposeNavScreen() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "first-screen") {
+        composable("first-screen") {
+            FirstTimeScreen(navController = navController)
+        }
+//        composable(
+//            "detail/{movieName}",
+//            arguments = listOf(navArgument("movieName") { type = NavType.StringType })
+//        ) { backStackEntry ->
+//            val movieName = backStackEntry.arguments?.getString("movieName")
+//            val selectedMovie = movieList1.first {it.name == movieName}
+//            DetailScreen(navController, selectedMovie);
+//        }
     }
 }
 
