@@ -44,6 +44,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.R
+import com.example.netflix_final.models.movieList
 import java.time.Duration
 import java.time.Year
 
@@ -90,7 +91,7 @@ fun FirstTimeScreen(navController: NavController) {
             )
 
             Box(modifier = Modifier.weight(1f)) {
-                ComposeHorizontalPager(pagerState)
+                ComposeHorizontalPager()
             }
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Row(
@@ -147,7 +148,8 @@ val textList: MutableList<FirstScreenText> = mutableListOf(
 )
 
 @OptIn(ExperimentalFoundationApi::class) @Composable
-fun ComposeHorizontalPager(pagerState: PagerState) {
+fun ComposeHorizontalPager() {
+    val pagerState = rememberPagerState( pageCount = { textList.size } )
 
     HorizontalPager(state = pagerState) {
         Box(
@@ -164,21 +166,21 @@ fun ComposeHorizontalPager(pagerState: PagerState) {
             ) {
                 Text(
                     textAlign = TextAlign.Center,
-                    text = textList[pagerState.currentPage].title,
+                    text = textList[it].title,
                     color = Color.White,
                     fontSize = 30.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Text(
                     textAlign = TextAlign.Center,
-                    text = textList[pagerState.currentPage].firstText,
+                    text = textList[it].firstText,
                     color = Color.White,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Light
                 )
                 Text(
                     textAlign = TextAlign.Center,
-                    text = textList[pagerState.currentPage].secondText,
+                    text = textList[it].secondText,
                     color = Color.White,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Light
