@@ -1,6 +1,7 @@
 package com.example.netflix_final.screens
 
 import android.content.ClipData.Item
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Face
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,15 +39,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import com.example.netflix_final.R
 import java.time.Duration
 import java.time.Year
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable()
 fun FirstTimeScreen(navController: NavController) {
-    Box(
+    Surface(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black)
+            .fillMaxSize(),
+        color = Color.Black
     ) {
         Column(
             Modifier.fillMaxSize()
@@ -52,11 +64,12 @@ fun FirstTimeScreen(navController: NavController) {
             ) {
                 Box(
                     modifier = Modifier.fillMaxHeight(),
-                    contentAlignment = Alignment.CenterEnd
+                    contentAlignment = Alignment.Center
                 ) {
-                    Row() {
-                        Text(text = "NETFLIX", color = Color.Red, fontSize = 30.sp, fontWeight = FontWeight.Bold)
-                    }
+                    AsyncImage(
+                        model = R.drawable.netflix_logo,
+                        contentDescription = "Netflix Logo"
+                    )
                 }
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -70,10 +83,26 @@ fun FirstTimeScreen(navController: NavController) {
                 }
             }
 
-            Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
-                LazyRow(modifier = Modifier.fillMaxHeight()) {
-                    items(textList.size) {
-                            index -> IntroPages(textList = textList[index])
+            val pagerState = rememberPagerState(pageCount = { textList.size }
+            )
+
+            Box(modifier = Modifier.weight(1f)) {
+                ComposeHorizontalPager(pagerState)
+            }
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    (0 until pagerState.pageCount).forEach {index ->
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .background(
+                                    color = if (index == pagerState.currentPage) Color.Red else Color.White,
+                                    shape = CircleShape
+                                )
+                            )
                     }
                 }
             }
@@ -114,41 +143,44 @@ val textList: MutableList<FirstScreenText> = mutableListOf(
     FirstScreenText("How do I watch?", "Members that subscribe to Netflix can watch here in the app.", "Create a Netflix account and more at netflix.com/more"),
 )
 
-@Composable
-fun IntroPages(textList: FirstScreenText) {
-    Box(
-        modifier = Modifier
-            .padding(40.dp)
-            .width(300.dp)
-            .fillMaxHeight(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
+@OptIn(ExperimentalFoundationApi::class) @Composable
+fun ComposeHorizontalPager(pagerState: PagerState) {
+
+    HorizontalPager(state = pagerState) {
+        Box(
             modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+                .padding(40.dp)
+                .width(300.dp)
+                .fillMaxHeight(),
+            contentAlignment = Alignment.Center
         ) {
-            Text(
-                textAlign = TextAlign.Center,
-                text = textList.title,
-                color = Color.White,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.ExtraBold
-            )
-            Text(
-                textAlign = TextAlign.Center,
-                text = textList.firstText,
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Light
-            )
-            Text(
-                textAlign = TextAlign.Center,
-                text = textList.secondText,
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Light
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    textAlign = TextAlign.Center,
+                    text = textList[pagerState.currentPage].title,
+                    color = Color.White,
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Text(
+                    textAlign = TextAlign.Center,
+                    text = textList[pagerState.currentPage].firstText,
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Light
+                )
+                Text(
+                    textAlign = TextAlign.Center,
+                    text = textList[pagerState.currentPage].secondText,
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Light
+                )
+            }
         }
     }
 }
