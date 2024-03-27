@@ -24,16 +24,31 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Face
+import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.List
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.ShoppingCart
+import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -65,6 +80,22 @@ import java.time.Year
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(navController: NavController) {
+    Scaffold(
+        bottomBar = { ComposableBottomAppBar() }
+    ){ paddingValues ->
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize(), contentAlignment = Alignment.Center,
+        ){
+            HomeScreenContent(navController)
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun HomeScreenContent(navController: NavController) {
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -91,10 +122,21 @@ fun HomeScreen(navController: NavController) {
                 )
             }
 
+//            Box(modifier = Modifier
+//                .fillMaxSize()
+//                .background(
+//                    brush = Brush.verticalGradient(
+//                        colors = listOf(Color.Black, Color.Transparent),
+//                        startY = 1600f,
+//                        endY = 1200f,
+//                    )
+//                )
+//            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
+                    .verticalScroll(rememberScrollState())
             ) {
                 Row(
                     modifier = Modifier
@@ -156,19 +198,45 @@ fun HomeScreen(navController: NavController) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(180.dp)
-                        .padding(horizontal = 0.dp),
-                    horizontalAlignment = Alignment.Start
+                        .fillMaxHeight()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(Color.Transparent, Color.Black),
+                                startY = 0f,
+                                endY = 300f,
+                            )
+                        )
                 ) {
-                    Text(text = "Continue watching", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
-                    LazyRow {
-//                        Place columns here
-                        items(continueWatching.size) {
-                            MovieBox(movie = continueWatching[it])
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .padding(horizontal = 0.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = "Continue watching", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
+                        LazyRow {
+                            items(continueWatching.size) {
+                                MovieBox(movie = continueWatching[it])
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .padding(horizontal = 0.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = "Continue watching", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
+                        LazyRow {
+                            items(continueWatching.size) {
+                                MovieBox(movie = continueWatching[it])
+                            }
                         }
                     }
                 }
-                
             }
         }
     }
@@ -311,4 +379,39 @@ fun MovieBox(movie: MovieModel) {
             }
         }
     }
+}
+
+@Composable
+fun ComposableBottomAppBar() {
+    BottomAppBar(
+        containerColor = Color.Black, contentColor = Color.White,
+        actions = {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Rounded.Home, contentDescription = "Home")
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Rounded.Search, contentDescription = "Cart")
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Rounded.PlayArrow, contentDescription = "Play")
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Rounded.List, contentDescription = "List")
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Rounded.MoreVert, contentDescription = "More")
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
+        },
+        modifier = Modifier.height(50.dp)
+    )
 }
