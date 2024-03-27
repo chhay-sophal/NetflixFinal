@@ -34,6 +34,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.R
+import com.example.netflix_final.models.loggedInUser
+import com.example.netflix_final.models.userList
 
 @Composable
 fun WhoIsWatchingScreen(navController: NavController) {
@@ -94,16 +96,6 @@ fun PreviewWhoIsWatchingScreen() {
     WhoIsWatchingScreen(navController = rememberNavController())
 }
 
-data class UserModel(val name: String, val profile: Int)
-
-private val userList: MutableList<UserModel> = mutableListOf(
-    UserModel("Sophal", R.drawable.sophal),
-    UserModel("Kimheak", R.drawable.kimheak),
-    UserModel("Nidate", R.drawable.nidate),
-    UserModel("Sarah", R.drawable.sarah),
-    UserModel("Kids", R.drawable.kids),
-)
-
 @Composable
 fun ComposeLazyVerticalGridFix(navController: NavController) {
     val isLastRowWithOneItem = userList.size % 2 != 0
@@ -114,7 +106,10 @@ fun ComposeLazyVerticalGridFix(navController: NavController) {
             ) {
                 items(userList.size - 1) { index ->
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            loggedInUser = userList[index]
+                            navController.navigate("home")
+                        },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp),
                         modifier = Modifier
@@ -143,7 +138,10 @@ fun ComposeLazyVerticalGridFix(navController: NavController) {
             ) {
                 items(1) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            loggedInUser = userList[1]
+                            navController.navigate("home")
+                        },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp),
                         modifier = Modifier
@@ -171,12 +169,17 @@ fun ComposeLazyVerticalGridFix(navController: NavController) {
             columns = GridCells.Fixed(2),
         ) {
             items(userList.size) { index ->
-                Box(
+                Button(
+                    onClick = {
+                        loggedInUser = userList[userList.lastIndex]
+                        navController.navigate("home")
+                    },
+                    colors = ButtonDefaults.buttonColors(Color.Transparent),
+                    shape = RoundedCornerShape(0.dp),
                     modifier = Modifier
                         .size(120.dp, 135.dp)
                         .padding(10.dp)
                         .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
