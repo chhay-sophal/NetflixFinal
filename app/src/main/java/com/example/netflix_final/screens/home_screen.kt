@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,9 +20,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -51,6 +54,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.R
 import com.example.netflix_final.models.MovieModel
+import com.example.netflix_final.models.continueWatching
 import com.example.netflix_final.models.formatDuration
 import com.example.netflix_final.models.loggedInUser
 import com.example.netflix_final.models.movieList
@@ -152,12 +156,16 @@ fun HomeScreen(navController: NavController) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
+                        .height(180.dp)
+                        .padding(horizontal = 0.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Text(text = "Continue watching")
-                    LazyColumn {
+                    Text(text = "Continue watching", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
+                    LazyRow {
 //                        Place columns here
+                        items(continueWatching.size) {
+                            MovieBox(movie = continueWatching[it])
+                        }
                     }
                 }
                 
@@ -275,6 +283,31 @@ fun MovieCard(movie: MovieModel) {
                         Text(text = "Info")
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun MovieBox(movie: MovieModel) {
+    Box(modifier = Modifier
+        .width(110.dp)
+        .height(160.dp)
+        .padding(start = 10.dp)
+    ) {
+        AsyncImage(model = movie.image, contentDescription = movie.description, modifier = Modifier.fillMaxSize())
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Surface(
+                modifier = Modifier
+                    .size(50.dp)
+                    .border(1.dp, Color.White, CircleShape)
+                    .background(Color.Gray.copy(alpha = 0.5f), CircleShape),
+                color = Color.Transparent
+            ) {
+                Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null)
             }
         }
     }

@@ -18,7 +18,6 @@ fun formatDuration(duration: Duration): String {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 val movieList: MutableList<MovieModel> = mutableListOf(
     MovieModel("Spider-Man: Into the Spider-Verse", "Teen Miles Morales becomes the Spider-Man of his universe, and must join with five spider-powered individuals from other dimensions to stop a threat for all realities.", Year.of(2018), Duration.ofMinutes(117), "https://www.themoviedb.org/t/p/original/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg"),
     MovieModel("The Dark Knight", "When the menace known as The Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham. The Dark Knight must accept one of the greatest psychological and physical tests of his ability to fight injustice.", Year.of(2008), Duration.ofMinutes(152), "https://cdn.europosters.eu/image/1300/art-photo/the-dark-knight-trilogy-batman-legend-i184448.jpg"),
@@ -42,6 +41,9 @@ val movieList: MutableList<MovieModel> = mutableListOf(
     MovieModel("Batman Begins", "After training with his mentor, Batman begins his fight to free crime-ridden Gotham City from corruption.", Year.of(2005), Duration.ofMinutes(140), "https://m.media-amazon.com/images/I/61-J2oc+ycL._AC_UF1000,1000_QL80_.jpg"),
     MovieModel("Man of Steel", "An alien child is evacuated from his dying world and sent to Earth to live among humans. His peace is threatened, when survivors of his home planet invade Earth.", Year.of(2013), Duration.ofMinutes(143), "https://www.themoviedb.org/t/p/original/7rIPjn5TUK04O25ZkMyHrGNPgLx.jpg")
 )
+
+var continueWatching: List<MovieModel> = movieList.take(8)
+
 
 //val movieList2: MutableList<MovieModel> = mutableListOf(
 //    MovieModel("The Shawshank Redemption", "Redemption story", "https://images-na.ssl-images-amazon.com/images/I/51kPjGVc6NL.jpg"),
