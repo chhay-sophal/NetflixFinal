@@ -12,12 +12,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.netflix_final.models.movieList
 import com.example.netflix_final.screens.FirstTimeScreen
 import com.example.netflix_final.screens.HomeScreen
 import com.example.netflix_final.screens.SignInScreen
+import com.example.netflix_final.screens.TitleDiveDeepScreen
 import com.example.netflix_final.screens.WhoIsWatchingScreen
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
 
@@ -57,14 +61,14 @@ fun ComposeNavScreen() {
         composable("home") {
             HomeScreen(navController = navController)
         }
-//        composable(
-//            "detail/{movieName}",
-//            arguments = listOf(navArgument("movieName") { type = NavType.StringType })
-//        ) { backStackEntry ->
-//            val movieName = backStackEntry.arguments?.getString("movieName")
-//            val selectedMovie = movieList1.first {it.name == movieName}
-//            DetailScreen(navController, selectedMovie);
-//        }
+        composable(
+            "movie-details/{title}",
+            arguments = listOf(navArgument("title") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title")
+            val selectedMovie = movieList.first {it.title == title}
+            TitleDiveDeepScreen(navController = navController, movie = selectedMovie);
+        }
     }
 }
 

@@ -31,6 +31,14 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         image = "https://media.themoviedb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg"
     ),
     MovieModel(
+        title = "Dune: Part Two",
+        description = "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family. Facing a choice between love and the fate of the universe, he endeavors to prevent a terrible future only he can foresee.",
+        genre = listOf(GenreModel("Sci-Fi"), GenreModel("Adventure"), GenreModel("Drama")), // Drama can be added for this movie
+        year = Year.of(2024),
+        duration = Duration.ofMinutes(166),
+        image = "https://media.themoviedb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg"
+    ),
+    MovieModel(
         title = "No Time to Die",
         description = "James Bond has left active service. His peace is short-lived when Felix Leiter, an old friend from the CIA, turns up asking for help, leading Bond onto the trail of a mysterious villain armed with dangerous new technology.",
         genre = listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Thriller")),

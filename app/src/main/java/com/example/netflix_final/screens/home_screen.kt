@@ -122,7 +122,7 @@ fun HomeScreenContent(navController: NavController) {
                     .fillMaxSize()
                     .padding(top = 30.dp)) {
 
-                    ComposeSuggestFilms()
+                    ComposeSuggestFilms(navController = navController)
 
                     Box(modifier = Modifier
                         .fillMaxSize()
@@ -217,7 +217,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "Continue watching", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(continueWatching.size) {
-                                MovieBox(movie = continueWatching[it])
+                                MovieBox(navController = navController, movie = continueWatching[it])
                             }
                         }
                     }
@@ -233,7 +233,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(movie = likeDune[it])
+                                MovieBox(navController = navController, movie = likeDune[it])
                             }
                         }
                     }
@@ -249,7 +249,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(movie = likeDune[it])
+                                MovieBox(navController = navController, movie = likeDune[it])
                             }
                         }
                     }
@@ -265,7 +265,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(movie = likeDune[it])
+                                MovieBox(navController = navController, movie = likeDune[it])
                             }
                         }
                     }
@@ -284,20 +284,25 @@ fun HomeScreenPreview() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class) @Composable
-fun ComposeSuggestFilms() {
+fun ComposeSuggestFilms(navController: NavController) {
     val pagerState = rememberPagerState( pageCount = { featureFilms.size } )
     HorizontalPager(state = pagerState) {
-        MovieCard(movie = featureFilms[it])
+        MovieCard(navController = navController, movie = featureFilms[it])
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MovieCard(movie: MovieModel) {
-    Box(
+fun MovieCard(navController: NavController, movie: MovieModel) {
+    Surface(
         modifier = Modifier
             .fillMaxWidth(),
-        contentAlignment = Alignment.Center
+        color = Color.Black,
+        contentColor = Color.White,
+        onClick = {
+            navController.navigate("movie-details/${movie.title}")
+        }
+//        contentAlignment = Alignment.Center
     ) {
         Box(
             modifier = Modifier
@@ -405,11 +410,16 @@ fun MovieCard(movie: MovieModel) {
 }
 
 @Composable
-fun MovieBox(movie: MovieModel) {
-    Box(modifier = Modifier
-        .width(110.dp)
-        .height(160.dp)
-        .padding(start = 10.dp)
+fun MovieBox(navController: NavController, movie: MovieModel) {
+    Surface(
+        modifier = Modifier
+            .width(110.dp)
+            .height(160.dp)
+            .padding(start = 10.dp),
+        color = Color.Transparent,
+        onClick = {
+            navController.navigate("movie-details/${movie.title}")
+        }
     ) {
         AsyncImage(model = movie.image, contentDescription = movie.description, modifier = Modifier.fillMaxSize())
         Box(
@@ -427,25 +437,6 @@ fun MovieBox(movie: MovieModel) {
             }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class) @Composable
-fun ComposeTopBar() {
-    TopAppBar( navigationIcon = {
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Rounded.Menu, contentDescription = "Menu") }
-    },
-        title = { Text("កម្មវ%ធីែខ្មរេយើង") },
-        colors = topAppBarColors(
-            containerColor = Color(0xFFE91E63), titleContentColor = Color.White, navigationIconContentColor = Color.White, actionIconContentColor = Color.White,
-        ),
-        actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Rounded.Share, contentDescription = "Share") }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Rounded.Settings, contentDescription = "Settings") }
-        }
-    )
 }
 
 @Composable
