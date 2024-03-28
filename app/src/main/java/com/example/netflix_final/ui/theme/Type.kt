@@ -2,9 +2,11 @@ package com.example.netflix_final.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.netflix_final.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -32,3 +34,10 @@ val Typography = Typography(
     )
     */
 )
+val NetflixFont = FontFamily(
+    Font(R.font.netflixsans_bold,FontWeight.Bold),
+    Font(R.font.netflixsans_light,FontWeight.Light),
+    Font(R.font.netflixsans_medium,FontWeight.Medium),
+    Font(R.font.netflixsans_regular,FontWeight.Normal),
+
+    )
