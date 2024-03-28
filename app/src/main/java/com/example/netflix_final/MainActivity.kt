@@ -32,7 +32,7 @@ import com.example.netflix_final.models.featureFilms
 import com.example.netflix_final.screens.FirstTimeScreen
 import com.example.netflix_final.screens.HomeScreen
 import com.example.netflix_final.screens.SignInScreen
-import com.example.netflix_final.screens.TitleDiveDeepScreen
+import com.example.netflix_final.screens.MovieDetailsScreen
 import com.example.netflix_final.screens.WhoIsWatchingScreen
 
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
@@ -82,7 +82,7 @@ fun ComposeNavScreen() {
         ) { backStackEntry ->
             val title = backStackEntry.arguments?.getString("title")
             val selectedMovie = movieList.first {it.title == title}
-            TitleDiveDeepScreen(navController = navController, movie = selectedMovie);
+            MovieDetailsScreen(navController = navController, movie = selectedMovie);
         }
     }
 }
