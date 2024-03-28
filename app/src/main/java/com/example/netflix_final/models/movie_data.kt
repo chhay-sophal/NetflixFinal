@@ -66,7 +66,8 @@ var featureFilms: MutableList<MovieModel> = mutableListOf(
         genre = listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Sci-Fi")),
         year = 2018,
         duration = 149,
-        image = "https://www.themoviedb.org/t/p/original/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg"
+        image = "https://www.themoviedb.org/t/p/original/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
+        cast = marvelCastList
     ),
 
     MovieModel(
@@ -75,7 +76,8 @@ var featureFilms: MutableList<MovieModel> = mutableListOf(
         genre = listOf(GenreModel("Animation"), GenreModel("Action"), GenreModel("Comedy")),
         year = 2008,
         duration = 190,
-        image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg"
+        image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg",
+        cast = marvelCastList
     ),
 )
 
@@ -163,7 +165,8 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         genre = listOf(GenreModel("Science Fiction"), GenreModel("Adventure"), GenreModel("Action")),
         year = 2021,
         duration = (155),
-        image = "https://media.themoviedb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg"
+        image = "https://media.themoviedb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+        cast = duneCastList
     ),
     MovieModel(
         title = "Dune: Part Two",
@@ -171,7 +174,8 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         genre = listOf(GenreModel("Sci-Fi"), GenreModel("Adventure"), GenreModel("Drama")), // Drama can be added for this movie
         year = 2024,
         duration = (166),
-        image = "https://media.themoviedb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg"
+        image = "https://media.themoviedb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
+        cast = duneCastList
     ),
     MovieModel(
         title = "No Time to Die",
@@ -315,7 +319,8 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         genre = listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Sci-Fi")),
         year = 2018,
         duration = (149),
-        image = "https://www.themoviedb.org/t/p/original/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg"
+        image = "https://www.themoviedb.org/t/p/original/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
+        cast = marvelCastList
     ),
     MovieModel(
         title = "Kung Fu Panda",

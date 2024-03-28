@@ -20,13 +20,13 @@ val duneCastList = listOf(
 
 val marvelCastList = listOf(
     // Assuming the movie is "Avengers: Endgame"
-    CastModel("Robert Downey Jr.", "Tony Stark / Iron Man"),
-    CastModel("Chris Evans", "Steve Rogers / Captain America"),
-    CastModel("Mark Ruffalo", "Bruce Banner / Hulk"),
-    CastModel("Chris Hemsworth", "Thor"),
-    CastModel("Scarlett Johansson", "Natasha Romanoff / Black Widow"),
-    CastModel("Jeremy Renner", "Clint Barton / Hawkeye"),
-    CastModel("Brie Larson", "Carol Danvers / Captain Marvel")
+    CastModel("Robert Downey Jr.", "Tony Stark / Iron Man", "https://image.tmdb.org/t/p/original/im9SAqJPZKEbVZGmjXuLI4O7RvM.jpg"),
+    CastModel("Chris Evans", "Steve Rogers / Captain America", "https://image.tmdb.org/t/p/w500/3bOGNsHlrswhyW79uvIHH1V43JI.jpg"),
+    CastModel("Mark Ruffalo", "Bruce Banner / Hulk", "https://media.themoviedb.org/t/p/w500/5GilHMOt5PAQh6rlUKZzGmaKEI7.jpg"),
+    CastModel("Chris Hemsworth", "Thor", "https://image.tmdb.org/t/p/original/tlkDiLn2G75Xr7m1ybK8QFzZBso.jpg"),
+    CastModel("Scarlett Johansson", "Natasha Romanoff / Black Widow", "https://image.tmdb.org/t/p/original/6bBCPmc55gzP7TR9Th4WbykrYd0.jpg"),
+    CastModel("Jeremy Renner", "Clint Barton / Hawkeye", "https://media.themoviedb.org/t/p/w500/yB84D1neTYXfWBaV0QOE9RF2VCu.jpg"),
+    CastModel("Brie Larson", "Carol Danvers / Captain Marvel", "https://image.tmdb.org/t/p/original/nTABNG8Sw4EVN3xodn2JBdEmBqv.jpg")
 )
 
 val interstellarCastList = listOf(

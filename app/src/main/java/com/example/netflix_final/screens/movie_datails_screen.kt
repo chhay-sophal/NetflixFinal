@@ -324,7 +324,11 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
                 .horizontalScroll(horizontalScrollState)
         ) {
             Row {
-                Column(modifier = Modifier.padding(end = 20.dp)) {
+                Column(
+                    modifier = Modifier.padding(end = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Surface(
                         modifier = Modifier
                             .height(120.dp)
@@ -346,7 +350,11 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
                     Text(text = "The making of " + movie.title)
                 }
 
-                Column(modifier = Modifier.padding(end = 20.dp)) {
+                Column(
+                    modifier = Modifier.padding(end = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Surface(
                         modifier = Modifier
                             .height(120.dp)
@@ -368,7 +376,11 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
                     Text(text = "First Look")
                 }
 
-                Column(modifier = Modifier.padding(end = 20.dp)) {
+                Column(
+                    modifier = Modifier.padding(end = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Surface(
                         modifier = Modifier
                             .height(120.dp)
