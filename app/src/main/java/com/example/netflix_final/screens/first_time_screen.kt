@@ -1,7 +1,9 @@
 package com.example.netflix_final.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,9 +72,18 @@ fun FirstTimeScreen(navController: NavController) {
                     contentAlignment = Alignment.CenterEnd
                 ) {
                     Row() {
+                        val context = LocalContext.current
                         Text(text = "Privacy", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Light)
                         Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = "Sign In", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Light)
+                        Text(
+                            text = "Sign In",
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Light,
+                            modifier = Modifier.clickable {
+                                navController.navigate("sign-in")
+                            }
+                        )
                     }
                 }
             }
