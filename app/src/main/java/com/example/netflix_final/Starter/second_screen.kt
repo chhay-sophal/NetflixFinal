@@ -100,7 +100,7 @@ fun BodySecond(){
                     .fillMaxSize()
 
                 ,
-                painter = painterResource(R.drawable.second),
+                painter = painterResource(R.drawable.second_page),
                 contentDescription = null
             )
 

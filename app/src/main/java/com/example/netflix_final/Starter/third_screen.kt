@@ -100,7 +100,7 @@ fun BodyThird(){
                     .fillMaxSize()
 
                 ,
-                painter = painterResource(R.drawable.third),
+                painter = painterResource(R.drawable.third_page),
                 contentDescription = null
             )
 

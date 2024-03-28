@@ -102,7 +102,7 @@ fun Body(){
                     .fillMaxSize()
 
                 ,
-                painter = painterResource(R.drawable.tv),
+                painter = painterResource(R.drawable.first_page),
                 contentDescription = null
             )
 
