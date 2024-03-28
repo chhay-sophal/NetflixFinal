@@ -26,12 +26,20 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,25 +55,61 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import com.example.netflix_final.R
 import com.example.netflix_final.models.CastModel
 import com.example.netflix_final.models.MovieModel
 import com.example.netflix_final.models.featureFilms
 import com.example.netflix_final.models.formatDuration
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable()
 fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
     val verticalScrollState = rememberScrollState()
     val horizontalScrollState = rememberScrollState()
 
-    Surface(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize(),
-        color = Color.Black,
-        contentColor = Color.White
-    ) {
+        topBar = {
+            TopAppBar(
+                title = { },
+                colors = topAppBarColors(
+                    containerColor = Color.Transparent, titleContentColor = Color.Transparent, navigationIconContentColor = Color.Transparent, actionIconContentColor = Color.Transparent,
+                ),
+                actions = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Surface(
+                            color = Color.Transparent,
+                            onClick = {
+                                navController.navigate("home")
+                            }
+                        ) {
+                            Icon(imageVector = Icons.Rounded.Close, contentDescription = null, tint = Color.White)
+                        }
+                    }
+                }
+            )
+        },
+        contentColor = Color.White,
+        containerColor = Color.Black
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .padding(paddingValues).fillMaxSize(), contentAlignment = Alignment.Center,
+        ){
+//            Text("Scaffold Body", fontSize = 25.sp)
+        }
+
         Poster(movie = movie, navController = navController)
 
         Content(verticalScrollState = verticalScrollState, horizontalScrollState = horizontalScrollState, movie = movie)
+
+
     }
 }
 
@@ -88,44 +132,6 @@ fun Poster(movie: MovieModel, navController: NavController) {
                 .background(Color.DarkGray))
 
             AsyncImage(model = movie.image, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth())
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(5.dp),
-                    contentAlignment = Alignment.CenterEnd
-                ) {
-                    Surface(
-                        color = Color.Transparent,
-                        onClick = {
-                            navController.navigate("home")
-                        }
-                    ) {
-                        Icon(imageVector = Icons.Rounded.Close, contentDescription = null, tint = Color.White)
-                    }
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Surface(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .border(1.dp, Color.White, CircleShape)
-                            .background(Color.Gray.copy(alpha = 0.5f), CircleShape),
-                        color = Color.Transparent
-                    ) {
-                        Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null, tint = Color.White)
-                    }
-                }
-                Spacer(modifier = Modifier.weight(1.5f))
-            }
         }
     }
 }
@@ -139,13 +145,14 @@ fun Content(verticalScrollState: ScrollState, horizontalScrollState: ScrollState
                 brush = Brush.verticalGradient(
                     colors = listOf(Color.Transparent, Color.Black),
                     startY = 1500f,
-                    endY = 1700f,
+                    endY = 1600f,
                 )
             )
+            .padding(bottom = 20.dp)
     ) {
         Column(
             modifier = Modifier
-                .padding(top = 600.dp)
+                .padding(top = 580.dp)
                 .padding(horizontal = 10.dp)
         ) {
             TitleAndInfo(movie = movie)
@@ -228,7 +235,33 @@ fun PlayAndDownloadButtons(movie: MovieModel) {
         contentColor = Color.Gray,
         onClick = {
             Toast.makeText( context,
-                "This is a toast message",
+                "Downloading",
+                Toast.LENGTH_SHORT ).show()
+        }
+    ){
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            AsyncImage(model = R.drawable.download_icon, contentDescription = null)
+//            Icon(imageVector = R.drawable.download_icon, contentDescription = null, tint = Color.Gray)
+            Text(text = "Download", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
+        }
+    }
+
+    //                Add to my list Button
+    Surface(
+        modifier = Modifier
+            .height(45.dp)
+            .padding(top = 10.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(5.dp),
+        color = Color.DarkGray,
+        contentColor = Color.Gray,
+        onClick = {
+            Toast.makeText( context,
+                "Added to My List",
                 Toast.LENGTH_SHORT ).show()
         }
     ){
@@ -238,7 +271,7 @@ fun PlayAndDownloadButtons(movie: MovieModel) {
             horizontalArrangement = Arrangement.Center
         ) {
             Icon(imageVector = Icons.Rounded.AddCircle, contentDescription = null, tint = Color.Gray)
-            Text(text = "Download", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
+            Text(text = "Add to My List", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
         }
     }
 }
