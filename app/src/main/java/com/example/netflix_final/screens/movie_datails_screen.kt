@@ -49,6 +49,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -117,7 +118,7 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
 @Preview(showSystemUi = true)
 @Composable()
 fun PreviewMovieDetailsScreen() {
-    MovieDetailsScreen(navController = rememberNavController(), movie = featureFilms[0])
+    MovieDetailsScreen(navController = rememberNavController(), movie = featureFilms[2])
 }
 
 @Composable
@@ -288,7 +289,7 @@ fun DescriptionsSection(movie: MovieModel) {
 // Trailer
 @Composable()
 fun TrailerSection(movie: MovieModel) {
-    Column {
+    Column(modifier = Modifier.width(180.dp)) {
         Text(text = "Trailer", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
         Surface(
             modifier = Modifier
@@ -308,7 +309,7 @@ fun TrailerSection(movie: MovieModel) {
                 Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null, tint = Color.White, modifier = Modifier.fillMaxSize())
             }
         }
-        Text(text = movie.title + " Trailer")
+        Text(text = movie.title + "'s Trailer", style = TextStyle(lineHeight = 20.sp))
     }
 }
 
@@ -325,9 +326,7 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
         ) {
             Row {
                 Column(
-                    modifier = Modifier.padding(end = 20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    modifier = Modifier.padding(end = 20.dp).width(180.dp)
                 ) {
                     Surface(
                         modifier = Modifier
@@ -347,13 +346,11 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
                             Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null, tint = Color.White, modifier = Modifier.fillMaxSize())
                         }
                     }
-                    Text(text = "The making of " + movie.title)
+                    Text(text = "The making of " + movie.title, style = TextStyle(lineHeight = 20.sp))
                 }
 
                 Column(
-                    modifier = Modifier.padding(end = 20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    modifier = Modifier.padding(end = 20.dp).width(180.dp)
                 ) {
                     Surface(
                         modifier = Modifier
@@ -377,9 +374,7 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
                 }
 
                 Column(
-                    modifier = Modifier.padding(end = 20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    modifier = Modifier.padding(end = 20.dp).width(180.dp)
                 ) {
                     Surface(
                         modifier = Modifier
@@ -417,7 +412,7 @@ fun CastSection(cast: List<CastModel>) {
             LazyRow {
                 items(cast.size) {
                     Column(
-                        modifier = Modifier.padding(end = 20.dp),
+                        modifier = Modifier.padding(end = 20.dp).width(100.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
@@ -429,7 +424,7 @@ fun CastSection(cast: List<CastModel>) {
                         ) {
                             AsyncImage(model = cast[it].imageUrl, contentDescription = null, contentScale = ContentScale.Crop)
                         }
-                        Text(text = cast[it].actorName, modifier = Modifier.padding(top = 5.dp))
+                        Text(text = cast[it].actorName, modifier = Modifier.padding(top = 5.dp), textAlign = TextAlign.Center)
                     }
                 }
             }
