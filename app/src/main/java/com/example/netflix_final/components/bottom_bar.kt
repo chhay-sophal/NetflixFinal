@@ -13,6 +13,7 @@ import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -59,7 +60,7 @@ fun ComposableBottomAppBar(navController: NavController) {
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = { /*TODO*/ }) {
                         val iconColor = if (currentRoute == "profile") Color.Red else Color.White
-                        Icon(Icons.Rounded.MoreVert, contentDescription = "More", tint = iconColor)
+                        Icon(Icons.Rounded.Settings, contentDescription = "Settings", tint = iconColor)
                     }
                     Spacer(modifier = Modifier.weight(1f))
                 }
