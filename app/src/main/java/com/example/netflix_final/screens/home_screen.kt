@@ -5,6 +5,7 @@ import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -88,7 +89,7 @@ import java.time.Year
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, pagerState: PagerState, scrollState: ScrollState) {
     Scaffold(
         bottomBar = { ComposableBottomAppBar() }
     ){ paddingValues ->
@@ -97,14 +98,15 @@ fun HomeScreen(navController: NavController) {
                 .padding(paddingValues)
                 .fillMaxSize(), contentAlignment = Alignment.Center,
         ){
-            HomeScreenContent(navController)
+            HomeScreenContent(navController, pagerState, scrollState)
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreenContent(navController: NavController) {
+fun HomeScreenContent(navController: NavController, pagerState: PagerState, scrollState: ScrollState) {
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -116,13 +118,13 @@ fun HomeScreenContent(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(scrollState)
             ) {
                 Box(modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 30.dp)) {
 
-                    ComposeSuggestFilms()
+                    ComposeSuggestFilms(navController = navController, pagerState = pagerState)
 
                     Box(modifier = Modifier
                         .fillMaxSize()
@@ -217,7 +219,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "Continue watching", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(continueWatching.size) {
-                                MovieBox(movie = continueWatching[it])
+                                MovieBox(navController = navController, movie = continueWatching[it])
                             }
                         }
                     }
@@ -233,7 +235,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(movie = likeDune[it])
+                                MovieBox(navController = navController, movie = likeDune[it])
                             }
                         }
                     }
@@ -249,7 +251,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(movie = likeDune[it])
+                                MovieBox(navController = navController, movie = likeDune[it])
                             }
                         }
                     }
@@ -265,7 +267,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(movie = likeDune[it])
+                                MovieBox(navController = navController, movie = likeDune[it])
                             }
                         }
                     }
@@ -275,29 +277,37 @@ fun HomeScreenContent(navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(navController = rememberNavController())
+    val navController = rememberNavController()
+    val pagerState = rememberPagerState(pageCount = { featureFilms.size })
+    val scrollState = rememberScrollState()
+    HomeScreen(navController, pagerState, scrollState)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class) @Composable
-fun ComposeSuggestFilms() {
-    val pagerState = rememberPagerState( pageCount = { featureFilms.size } )
+fun ComposeSuggestFilms(navController: NavController, pagerState: PagerState) {
     HorizontalPager(state = pagerState) {
-        MovieCard(movie = featureFilms[it])
+        MovieCard(navController = navController, movie = featureFilms[it])
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MovieCard(movie: MovieModel) {
-    Box(
+fun MovieCard(navController: NavController, movie: MovieModel) {
+    Surface(
         modifier = Modifier
             .fillMaxWidth(),
-        contentAlignment = Alignment.Center
+        color = Color.Black,
+        contentColor = Color.White,
+        onClick = {
+            navController.navigate("movie-details/${movie.title}")
+        }
+//        contentAlignment = Alignment.Center
     ) {
         Box(
             modifier = Modifier
@@ -405,11 +415,16 @@ fun MovieCard(movie: MovieModel) {
 }
 
 @Composable
-fun MovieBox(movie: MovieModel) {
-    Box(modifier = Modifier
-        .width(110.dp)
-        .height(160.dp)
-        .padding(start = 10.dp)
+fun MovieBox(navController: NavController, movie: MovieModel) {
+    Surface(
+        modifier = Modifier
+            .width(110.dp)
+            .height(160.dp)
+            .padding(start = 10.dp),
+        color = Color.Transparent,
+        onClick = {
+            navController.navigate("movie-details/${movie.title}")
+        }
     ) {
         AsyncImage(model = movie.image, contentDescription = movie.description, modifier = Modifier.fillMaxSize())
         Box(
@@ -427,25 +442,6 @@ fun MovieBox(movie: MovieModel) {
             }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class) @Composable
-fun ComposeTopBar() {
-    TopAppBar( navigationIcon = {
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Rounded.Menu, contentDescription = "Menu") }
-    },
-        title = { Text("កម្មវ%ធីែខ្មរេយើង") },
-        colors = topAppBarColors(
-            containerColor = Color(0xFFE91E63), titleContentColor = Color.White, navigationIconContentColor = Color.White, actionIconContentColor = Color.White,
-        ),
-        actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Rounded.Share, contentDescription = "Share") }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Rounded.Settings, contentDescription = "Settings") }
-        }
-    )
 }
 
 @Composable
