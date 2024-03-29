@@ -32,7 +32,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Home
@@ -84,6 +86,7 @@ import com.example.netflix_final.models.formatDuration
 import com.example.netflix_final.models.likeDune
 import com.example.netflix_final.models.loggedInUser
 import com.example.netflix_final.models.movieList
+import com.example.netflix_final.models.myList
 import java.time.Duration
 import java.time.Year
 
@@ -361,11 +364,21 @@ fun MovieCard(navController: NavController, movie: MovieModel) {
 
                     Button(
                         onClick = {
-                            Toast.makeText(
-                                context,
-                                "Movies",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            if (myList.contains(movie)) {
+                                myList.removeAll { it == movie } // Safely remove movie from myList
+                                Toast.makeText(
+                                    context,
+                                    "${movie.title} removed from My List",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                myList.add(movie) // Safely add movie to myList
+                                Toast.makeText(
+                                    context,
+                                    "${movie.title} added to My List",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp),
@@ -374,7 +387,13 @@ fun MovieCard(navController: NavController, movie: MovieModel) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Icon(Icons.Rounded.Add, contentDescription = "Back")
+//                            Icon(Icons.Rounded.Add, contentDescription = "Back")
+//                            Text(text = "My List")
+                            if (myList.contains(movie)) {
+                                Icon(imageVector = Icons.Rounded.Delete, contentDescription = null)
+                            } else {
+                                Icon(imageVector = Icons.Rounded.AddCircle, contentDescription = null)
+                            }
                             Text(text = "My List")
                         }
                     }
