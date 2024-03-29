@@ -5,7 +5,7 @@ import androidx.annotation.RequiresApi
 
 data class GenreModel(val name: String)
 
-data class MovieModel(val title: String, val description: String, val genre: List<GenreModel>,  val year: Int, val duration: Int, val image: String, val cast: List<CastModel>? = null)
+data class MovieModel(val title: String, val description: String, val genre: List<GenreModel>? = null,  val year: Int? = null, val duration: Int? = null, val image: String, val cast: List<CastModel>? = null)
 
 fun formatDuration(minutes: Int): String {
     val hours = minutes / 60
@@ -382,3 +382,80 @@ val movieList: MutableList<MovieModel> = mutableListOf(
 
 @RequiresApi(Build.VERSION_CODES.O)
 var continueWatching: List<MovieModel> = movieList.take(8)
+
+@RequiresApi(Build.VERSION_CODES.O)
+var myList: MutableList<MovieModel> = mutableListOf(
+    MovieModel(
+        title = "Dune: Part Two",
+        description = "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family. Facing a choice between love and the fate of the universe, he endeavors to prevent a terrible future only he can foresee.",
+        image = "https://image.tmdb.org/t/p/w1280/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
+    ),
+    MovieModel(
+        title = "Dune",
+        description = "Paul Atreides leads nomadic tribes in a battle to control the desert planet Arrakis.",
+        image = "https://image.tmdb.org/t/p/original/jYEW5xZkZk2WTrdbMGAPFuBqbDc.jpg",
+    ),
+    MovieModel(
+        title = "Blade Runner 2049",
+        description = "In a future where Earth's ecosystem has collapsed, a young blade runner uncovers a long-buried secret that has the potential to plunge society into chaos.",
+        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg"
+    ),
+    MovieModel(
+        title = "Arrival",
+        description = "A linguist is recruited by the military to assist in translating alien communications and unravel the mystery of their visitation.",
+        image = "https://media.themoviedb.org/t/p/w500/pEzNVQfdzYDzVK0XqxERIw2x2se.jpg"
+    ),
+    MovieModel(
+        title = "The Lord of the Rings: The Return of the King",
+        description = "Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.",
+        image = "https://www.themoviedb.org/t/p/original/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg",
+    ),
+    MovieModel(
+        title = "Avengers: Infinity War",
+        description = "The Avengers and their allies must be willing to sacrifice all in an attempt to defeat the powerful Thanos before his blitz of devastation and ruin puts an end to the universe.",
+        image = "https://www.themoviedb.org/t/p/original/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
+    ),
+    MovieModel(
+        title = "No Time to Die",
+        description = "James Bond has left active service. His peace is short-lived when Felix Leiter, an old friend from the CIA, turns up asking for help, leading Bond onto the trail of a mysterious villain armed with dangerous new technology.",
+        image = "https://image.tmdb.org/t/p/original/aGqbo87fnIKRe1i2QgpCQCMbhfk.jpg"
+    ),
+    MovieModel(
+        title = "Joker",
+        description = "In Gotham City, mentally troubled comedian Arthur Fleck is disregarded and mistreated by society. He then embarks on a downward spiral of revolution and bloody crime. This path brings him face-to-face with his alter-ego: the Joker.",
+        image = "https://www.themoviedb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg"
+    ),
+    MovieModel(
+        title = "Parasite",
+        description = "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
+        image = "https://www.themoviedb.org/t/p/original/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg"
+    ),
+    MovieModel(
+        title = "The Shawshank Redemption",
+        description = "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+        image = "https://www.themoviedb.org/t/p/original/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg"
+    ),
+    MovieModel(
+        "Interstellar",
+        "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+        listOf(GenreModel("Adventure"), GenreModel("Drama"), GenreModel("Sci-Fi")),
+        2014,
+        169,
+        "https://www.themoviedb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+        cast = duneCastList
+    ),
+
+    MovieModel(
+        title = "Avengers: Infinity War",
+        description = "The Avengers and their allies must be willing to sacrifice all in an attempt to defeat the powerful Thanos before his blitz of devastation and ruin puts an end to the universe.",
+        image = "https://www.themoviedb.org/t/p/original/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
+        cast = marvelCastList
+    ),
+
+    MovieModel(
+        title = "Kung Fu Panda",
+        description = "When the Valley of Peace is threatened, lazy Po the panda discovers his destiny as the chosen one and trains to become a kung fu hero, but transforming the unsleek slacker into a brave warrior won't be easy.",
+        image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg",
+        cast = marvelCastList
+    ),
+)

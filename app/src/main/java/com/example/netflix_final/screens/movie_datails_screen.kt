@@ -87,7 +87,7 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
                         Surface(
                             color = Color.Transparent,
                             onClick = {
-                                navController.navigate("home")
+                                navController.navigateUp()
                             }
                         ) {
                             Icon(imageVector = Icons.Rounded.Close, contentDescription = null, tint = Color.White)
@@ -184,12 +184,14 @@ fun TitleAndInfo(movie: MovieModel) {
 //                Info
     Column() {
         Text(text = "Year: " + movie.year.toString(), fontWeight = FontWeight.Normal)
-        Text(text = "Duration: " + formatDuration(movie.duration), fontWeight = FontWeight.Normal)
+        Text(text = "Duration: " + movie.duration?.let { formatDuration(it) }, fontWeight = FontWeight.Normal)
         Row {
             Text(text = "Genre:", fontWeight = FontWeight.Normal)
             LazyRow {
-                items(movie.genre.size) {
-                    Text(text = movie.genre[it].name, fontWeight = FontWeight.Normal, modifier = Modifier.padding(horizontal = 5.dp))
+                movie.genre?.let {
+                    items(it.size) {
+                        Text(text = movie.genre[it].name, fontWeight = FontWeight.Normal, modifier = Modifier.padding(horizontal = 5.dp))
+                    }
                 }
             }
         }

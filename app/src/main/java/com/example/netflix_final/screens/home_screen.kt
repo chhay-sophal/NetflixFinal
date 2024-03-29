@@ -76,6 +76,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.R
+import com.example.netflix_final.components.ComposableBottomAppBar
 import com.example.netflix_final.models.MovieModel
 import com.example.netflix_final.models.continueWatching
 import com.example.netflix_final.models.featureFilms
@@ -91,12 +92,13 @@ import java.time.Year
 @Composable
 fun HomeScreen(navController: NavController, pagerState: PagerState, scrollState: ScrollState) {
     Scaffold(
-        bottomBar = { ComposableBottomAppBar() }
+        bottomBar = { ComposableBottomAppBar(navController) }
     ){ paddingValues ->
         Box(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize(), contentAlignment = Alignment.Center,
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
         ){
             HomeScreenContent(navController, pagerState, scrollState)
         }
@@ -343,8 +345,10 @@ fun MovieCard(navController: NavController, movie: MovieModel) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    items(movie.genre.size) {
-                        Text(text = movie.genre[it].name, modifier = Modifier.padding(horizontal = 5.dp))
+                    movie.genre?.let {
+                        items(it.size) {
+                            Text(text = movie.genre[it].name, modifier = Modifier.padding(horizontal = 5.dp))
+                        }
                     }
                 }
                 Row(
@@ -442,39 +446,4 @@ fun MovieBox(navController: NavController, movie: MovieModel) {
             }
         }
     }
-}
-
-@Composable
-fun ComposableBottomAppBar() {
-    BottomAppBar(
-        containerColor = Color.Black, contentColor = Color.White,
-        actions = {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Rounded.Home, contentDescription = "Home")
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Rounded.Search, contentDescription = "Cart")
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Rounded.PlayArrow, contentDescription = "Play")
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Rounded.List, contentDescription = "List")
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Rounded.MoreVert, contentDescription = "More")
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-            }
-        },
-        modifier = Modifier.height(50.dp)
-    )
 }
