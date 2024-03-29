@@ -150,6 +150,14 @@ var likeDune: MutableList<MovieModel> = mutableListOf(
 @RequiresApi(Build.VERSION_CODES.O)
 val movieList: MutableList<MovieModel> = mutableListOf(
     MovieModel(
+        title = "Blade Runner 2049",
+        description = "In a future where Earth's ecosystem has collapsed, a young blade runner uncovers a long-buried secret that has the potential to plunge society into chaos.",
+        genre = listOf(GenreModel("Sci-Fi"), GenreModel("Thriller")),
+        year = 2017,
+        duration = (164),
+        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg"
+    ),
+    MovieModel(
         title = "Dune",
         description = "Paul Atreides leads nomadic tribes in a battle to control the desert planet Arrakis.",
         genre = listOf(GenreModel("Science Fiction"), GenreModel("Adventure"), GenreModel("Action")),
@@ -261,7 +269,8 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         listOf(GenreModel("Adventure"), GenreModel("Drama"), GenreModel("Sci-Fi")),
         2014,
         (169),
-        "https://www.themoviedb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
+        "https://www.themoviedb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+        cast = interstellarCastList
     ),
     MovieModel(
         "The Silence of the Lambs",
