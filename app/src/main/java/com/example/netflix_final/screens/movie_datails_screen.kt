@@ -5,13 +5,11 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,12 +22,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.AddCircle
-import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -42,6 +40,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -54,6 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.media3.exoplayer.offline.Download
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
@@ -62,38 +64,59 @@ import com.example.netflix_final.models.CastModel
 import com.example.netflix_final.models.MovieModel
 import com.example.netflix_final.models.featureFilms
 import com.example.netflix_final.models.formatDuration
+import com.example.netflix_final.models.moreLikeThis
 import com.example.netflix_final.models.myList
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable()
+@Composable
 fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
     val verticalScrollState = rememberScrollState()
     val horizontalScrollState = rememberScrollState()
+
+    val topAppBarContainerColor by remember {
+        derivedStateOf {
+            if (verticalScrollState.value > 1400) {
+                Color.Black
+            } else {
+                Color.Transparent
+            }
+        }
+    }
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
         topBar = {
             TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(Icons.Rounded.KeyboardArrowLeft, contentDescription = "Back", modifier = Modifier.size(40.dp))
+                    }
+                },
                 title = { },
                 colors = topAppBarColors(
-                    containerColor = Color.Transparent, titleContentColor = Color.Transparent, navigationIconContentColor = Color.Transparent, actionIconContentColor = Color.Transparent,
+                    containerColor = topAppBarContainerColor,
+                    titleContentColor = Color.Transparent,
+                    navigationIconContentColor = Color.White,
+                    actionIconContentColor = Color.White,
                 ),
                 actions = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(5.dp),
-                        contentAlignment = Alignment.CenterEnd
-                    ) {
-                        Surface(
-                            color = Color.Transparent,
-                            onClick = {
-                                navController.navigateUp()
-                            }
-                        ) {
-                            Icon(imageVector = Icons.Rounded.Close, contentDescription = null, tint = Color.White)
+                    IconButton(onClick = {
+                        if (myList.contains(movie)) {
+                            myList.removeAll { it == movie }
+                        } else {
+                            myList.add(movie)
                         }
+                    }) {
+                        if (myList.contains(movie)) {
+                            Icon(imageVector = Icons.Rounded.Check, contentDescription = null)
+                        } else {
+                            Icon(imageVector = Icons.Rounded.Add, contentDescription = null)
+                        }
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Rounded.Share, contentDescription = null)
                     }
                 }
             )
@@ -103,14 +126,15 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
     ) { paddingValues ->
         Box(
             modifier = Modifier
-                .padding(paddingValues).fillMaxSize(), contentAlignment = Alignment.Center,
+                .padding(paddingValues)
+                .fillMaxSize(), contentAlignment = Alignment.Center,
         ){
 //            Text("Scaffold Body", fontSize = 25.sp)
         }
 
         Poster(movie = movie, navController = navController)
 
-        Content(verticalScrollState = verticalScrollState, horizontalScrollState = horizontalScrollState, movie = movie)
+        Content(verticalScrollState = verticalScrollState, horizontalScrollState = horizontalScrollState, movie = movie, navController = navController)
 
 
     }
@@ -120,7 +144,7 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
 @Preview(showSystemUi = true)
 @Composable()
 fun PreviewMovieDetailsScreen() {
-    MovieDetailsScreen(navController = rememberNavController(), movie = featureFilms[2])
+    MovieDetailsScreen(navController = rememberNavController(), movie = moreLikeThis[1])
 }
 
 @Composable
@@ -139,15 +163,16 @@ fun Poster(movie: MovieModel, navController: NavController) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Content(verticalScrollState: ScrollState, horizontalScrollState: ScrollState, movie: MovieModel) {
+fun Content(verticalScrollState: ScrollState, horizontalScrollState: ScrollState, movie: MovieModel, navController: NavController) {
     Box(
         modifier = Modifier
             .verticalScroll(verticalScrollState)
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(Color.Transparent, Color.Black),
-                    startY = 1500f,
+                    startY = 1300f,
                     endY = 1600f,
                 )
             )
@@ -155,7 +180,7 @@ fun Content(verticalScrollState: ScrollState, horizontalScrollState: ScrollState
     ) {
         Column(
             modifier = Modifier
-                .padding(top = 580.dp)
+                .padding(top = 520.dp)
                 .padding(horizontal = 10.dp)
         ) {
             TitleAndInfo(movie = movie)
@@ -171,6 +196,8 @@ fun Content(verticalScrollState: ScrollState, horizontalScrollState: ScrollState
             if (movie.cast?.isNotEmpty() == true) {
                 CastSection(cast = movie.cast)
             }
+
+            MoreLikeThisSection(navController = navController)
         }
     }
 }
@@ -178,24 +205,42 @@ fun Content(verticalScrollState: ScrollState, horizontalScrollState: ScrollState
 // Title and Info section
 @Composable()
 fun TitleAndInfo(movie: MovieModel) {
+//    Genre
+    val lastGenre = movie.genre?.lastIndex
+
+    LazyRow(modifier = Modifier
+        .fillMaxWidth()
+        .padding(bottom = 5.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+        movie.genre?.let { it ->
+            items(it.size) {
+                Text(text = movie.genre[it].name, modifier = Modifier.padding(horizontal = 10 .dp))
+                if (it != lastGenre) {
+                    Box(modifier = Modifier
+                        .size(5.dp)
+                        .background(Color.White, CircleShape))
+                }
+            }
+        }
+    }
     //                Title
-    Box() {
-        Text(text = movie.title, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+    Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 40.dp), contentAlignment = Alignment.Center) {
+        Text(text = movie.title, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
     }
 
 //                Info
-    Column() {
-        Text(text = "Year: " + movie.year.toString(), fontWeight = FontWeight.Normal)
-        Text(text = "Duration: " + movie.duration?.let { formatDuration(it) }, fontWeight = FontWeight.Normal)
-        Row {
-            Text(text = "Genre:", fontWeight = FontWeight.Normal)
-            LazyRow {
-                movie.genre?.let {
-                    items(it.size) {
-                        Text(text = movie.genre[it].name, fontWeight = FontWeight.Normal, modifier = Modifier.padding(horizontal = 5.dp))
-                    }
-                }
-            }
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 5.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+        Text(text = movie.year.toString(), fontWeight = FontWeight.Normal, modifier = Modifier.padding(horizontal = 10 .dp))
+        Box(modifier = Modifier
+            .size(5.dp)
+            .background(Color.White, CircleShape))
+        movie.duration?.let { duration ->
+            Text(
+                text = formatDuration(duration),
+                fontWeight = FontWeight.Normal,
+                modifier = Modifier.padding(horizontal = 10 .dp)
+            )
         }
     }
 }
@@ -204,21 +249,18 @@ fun TitleAndInfo(movie: MovieModel) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable()
 fun PlayAndDownloadButtons(movie: MovieModel) {
-    //                Play Button
+//Play Button
     val context = LocalContext.current
     Surface(
         modifier = Modifier
-            .height(45.dp)
+            .height(50.dp)
             .padding(top = 10.dp)
+            .padding(horizontal = 50.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(5.dp),
         color = Color.White,
         contentColor = Color.Black,
-        onClick = {
-            Toast.makeText( context,
-                "This is a toast message",
-                Toast.LENGTH_SHORT ).show()
-        }
+        onClick = { }
     ){
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -230,18 +272,19 @@ fun PlayAndDownloadButtons(movie: MovieModel) {
         }
     }
 
-//                Download Button
+//Download Button
     Surface(
         modifier = Modifier
-            .height(45.dp)
+            .height(50.dp)
             .padding(top = 10.dp)
+            .padding(horizontal = 50.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(5.dp),
         color = Color.DarkGray,
         contentColor = Color.Gray,
         onClick = {
             Toast.makeText( context,
-                "Downloading",
+                "Downloading...",
                 Toast.LENGTH_SHORT ).show()
         }
     ){
@@ -250,51 +293,8 @@ fun PlayAndDownloadButtons(movie: MovieModel) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            AsyncImage(model = R.drawable.download_icon, contentDescription = null)
-//            Icon(imageVector = R.drawable.download_icon, contentDescription = null, tint = Color.Gray)
+            AsyncImage(model = R.drawable.download_icon_gray, contentDescription = null, modifier = Modifier.size(30.dp))
             Text(text = "Download", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
-        }
-    }
-
-    //                Add to my list Button
-    Surface(
-        modifier = Modifier
-            .height(45.dp)
-            .padding(top = 10.dp)
-            .fillMaxWidth(),
-        shape = RoundedCornerShape(5.dp),
-        color = Color.DarkGray,
-        contentColor = Color.Gray,
-        onClick = {
-            if (myList.contains(movie)) {
-                myList.removeAll { it == movie } // Safely remove movie from myList
-                Toast.makeText(
-                    context,
-                    "${movie.title} removed from My List",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                myList.add(movie) // Safely add movie to myList
-                Toast.makeText(
-                    context,
-                    "${movie.title} added to My List",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    ){
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            if (myList.contains(movie)) {
-                Icon(imageVector = Icons.Rounded.Delete, contentDescription = null, tint = Color.Gray)
-                Text(text = "Remove from My List", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
-            } else {
-                Icon(imageVector = Icons.Rounded.AddCircle, contentDescription = null, tint = Color.Gray)
-                Text(text = "Add to My List", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
-            }
         }
     }
 }
@@ -303,11 +303,12 @@ fun PlayAndDownloadButtons(movie: MovieModel) {
 @Composable()
 fun DescriptionsSection(movie: MovieModel) {
     Box(
-        modifier = Modifier.padding(vertical = 10.dp)
+        modifier = Modifier.padding(vertical = 20.dp)
     ) {
         Text(text = movie.description, style = TextStyle(lineHeight = 23.sp))
     }
 }
+
 // Trailer
 @Composable()
 fun TrailerSection(movie: MovieModel) {
@@ -348,7 +349,9 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
         ) {
             Row {
                 Column(
-                    modifier = Modifier.padding(end = 20.dp).width(180.dp)
+                    modifier = Modifier
+                        .padding(end = 20.dp)
+                        .width(180.dp)
                 ) {
                     Surface(
                         modifier = Modifier
@@ -372,7 +375,9 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
                 }
 
                 Column(
-                    modifier = Modifier.padding(end = 20.dp).width(180.dp)
+                    modifier = Modifier
+                        .padding(end = 20.dp)
+                        .width(180.dp)
                 ) {
                     Surface(
                         modifier = Modifier
@@ -396,7 +401,9 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
                 }
 
                 Column(
-                    modifier = Modifier.padding(end = 20.dp).width(180.dp)
+                    modifier = Modifier
+                        .padding(end = 20.dp)
+                        .width(180.dp)
                 ) {
                     Surface(
                         modifier = Modifier
@@ -416,7 +423,7 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
                             Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null, tint = Color.White, modifier = Modifier.fillMaxSize())
                         }
                     }
-                    Text(text = "Behind the Scence")
+                    Text(text = "Behind the Scene")
                 }
             }
         }
@@ -429,12 +436,14 @@ fun CastSection(cast: List<CastModel>) {
     Column(
         modifier = Modifier.padding(top = 40.dp)
     ) {
-        Text(text = "Cast", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+        Text(text = "Cast & Crew", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
         Box(modifier = Modifier.padding(top = 10.dp)) {
             LazyRow {
                 items(cast.size) {
                     Column(
-                        modifier = Modifier.padding(end = 20.dp).width(100.dp),
+                        modifier = Modifier
+                            .padding(end = 20.dp)
+                            .width(100.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
@@ -447,6 +456,32 @@ fun CastSection(cast: List<CastModel>) {
                             AsyncImage(model = cast[it].imageUrl, contentDescription = null, contentScale = ContentScale.Crop)
                         }
                         Text(text = cast[it].actorName, modifier = Modifier.padding(top = 5.dp), textAlign = TextAlign.Center)
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Bonus Content
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable()
+fun MoreLikeThisSection(navController: NavController) {
+    Column(
+        modifier = Modifier.padding(top = 40.dp)
+    ) {
+        Text(text = "More Like This", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+        Box {
+            LazyRow {
+                items(moreLikeThis.size) {
+                    Surface(
+                        modifier = Modifier.width(110.dp).padding(vertical = 10.dp).padding(horizontal = 5.dp),
+                        shape = RoundedCornerShape(1.dp),
+                        onClick = {
+                            navController.navigate("movie-details/${moreLikeThis[it].title}")
+                        }
+                    ) {
+                        AsyncImage(model = moreLikeThis[it].image, contentDescription = null)
                     }
                 }
             }
