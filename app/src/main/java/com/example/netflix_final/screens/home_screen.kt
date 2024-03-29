@@ -5,6 +5,7 @@ import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +32,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Home
@@ -75,6 +78,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.R
+import com.example.netflix_final.components.ComposableBottomAppBar
 import com.example.netflix_final.models.MovieModel
 import com.example.netflix_final.models.continueWatching
 import com.example.netflix_final.models.featureFilms
@@ -82,29 +86,32 @@ import com.example.netflix_final.models.formatDuration
 import com.example.netflix_final.models.likeDune
 import com.example.netflix_final.models.loggedInUser
 import com.example.netflix_final.models.movieList
+import com.example.netflix_final.models.myList
 import java.time.Duration
 import java.time.Year
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, pagerState: PagerState, scrollState: ScrollState) {
     Scaffold(
-        bottomBar = { ComposableBottomAppBar() }
+        bottomBar = { ComposableBottomAppBar(navController) }
     ){ paddingValues ->
         Box(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize(), contentAlignment = Alignment.Center,
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
         ){
-            HomeScreenContent(navController)
+            HomeScreenContent(navController, pagerState, scrollState)
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreenContent(navController: NavController) {
+fun HomeScreenContent(navController: NavController, pagerState: PagerState, scrollState: ScrollState) {
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -116,13 +123,13 @@ fun HomeScreenContent(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(scrollState)
             ) {
                 Box(modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 30.dp)) {
 
-                    ComposeSuggestFilms()
+                    ComposeSuggestFilms(navController = navController, pagerState = pagerState)
 
                     Box(modifier = Modifier
                         .fillMaxSize()
@@ -217,7 +224,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "Continue watching", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(continueWatching.size) {
-                                MovieBox(movie = continueWatching[it])
+                                MovieBox(navController = navController, movie = continueWatching[it])
                             }
                         }
                     }
@@ -233,7 +240,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(movie = likeDune[it])
+                                MovieBox(navController = navController, movie = likeDune[it])
                             }
                         }
                     }
@@ -249,7 +256,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(movie = likeDune[it])
+                                MovieBox(navController = navController, movie = likeDune[it])
                             }
                         }
                     }
@@ -265,7 +272,7 @@ fun HomeScreenContent(navController: NavController) {
                         Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(movie = likeDune[it])
+                                MovieBox(navController = navController, movie = likeDune[it])
                             }
                         }
                     }
@@ -275,29 +282,37 @@ fun HomeScreenContent(navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(navController = rememberNavController())
+    val navController = rememberNavController()
+    val pagerState = rememberPagerState(pageCount = { featureFilms.size })
+    val scrollState = rememberScrollState()
+    HomeScreen(navController, pagerState, scrollState)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class) @Composable
-fun ComposeSuggestFilms() {
-    val pagerState = rememberPagerState( pageCount = { featureFilms.size } )
+fun ComposeSuggestFilms(navController: NavController, pagerState: PagerState) {
     HorizontalPager(state = pagerState) {
-        MovieCard(movie = featureFilms[it])
+        MovieCard(navController = navController, movie = featureFilms[it])
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MovieCard(movie: MovieModel) {
-    Box(
+fun MovieCard(navController: NavController, movie: MovieModel) {
+    Surface(
         modifier = Modifier
             .fillMaxWidth(),
-        contentAlignment = Alignment.Center
+        color = Color.Black,
+        contentColor = Color.White,
+        onClick = {
+            navController.navigate("movie-details/${movie.title}")
+        }
+//        contentAlignment = Alignment.Center
     ) {
         Box(
             modifier = Modifier
@@ -333,8 +348,10 @@ fun MovieCard(movie: MovieModel) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    items(movie.genre.size) {
-                        Text(text = movie.genre[it].name, modifier = Modifier.padding(horizontal = 5.dp))
+                    movie.genre?.let {
+                        items(it.size) {
+                            Text(text = movie.genre[it].name, modifier = Modifier.padding(horizontal = 5.dp))
+                        }
                     }
                 }
                 Row(
@@ -347,11 +364,21 @@ fun MovieCard(movie: MovieModel) {
 
                     Button(
                         onClick = {
-                            Toast.makeText(
-                                context,
-                                "Movies",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            if (myList.contains(movie)) {
+                                myList.removeAll { it == movie } // Safely remove movie from myList
+                                Toast.makeText(
+                                    context,
+                                    "${movie.title} removed from My List",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                myList.add(movie) // Safely add movie to myList
+                                Toast.makeText(
+                                    context,
+                                    "${movie.title} added to My List",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp),
@@ -360,7 +387,13 @@ fun MovieCard(movie: MovieModel) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Icon(Icons.Rounded.Add, contentDescription = "Back")
+//                            Icon(Icons.Rounded.Add, contentDescription = "Back")
+//                            Text(text = "My List")
+                            if (myList.contains(movie)) {
+                                Icon(imageVector = Icons.Rounded.Delete, contentDescription = null)
+                            } else {
+                                Icon(imageVector = Icons.Rounded.AddCircle, contentDescription = null)
+                            }
                             Text(text = "My List")
                         }
                     }
@@ -405,11 +438,16 @@ fun MovieCard(movie: MovieModel) {
 }
 
 @Composable
-fun MovieBox(movie: MovieModel) {
-    Box(modifier = Modifier
-        .width(110.dp)
-        .height(160.dp)
-        .padding(start = 10.dp)
+fun MovieBox(navController: NavController, movie: MovieModel) {
+    Surface(
+        modifier = Modifier
+            .width(110.dp)
+            .height(160.dp)
+            .padding(start = 10.dp),
+        color = Color.Transparent,
+        onClick = {
+            navController.navigate("movie-details/${movie.title}")
+        }
     ) {
         AsyncImage(model = movie.image, contentDescription = movie.description, modifier = Modifier.fillMaxSize())
         Box(
@@ -427,58 +465,4 @@ fun MovieBox(movie: MovieModel) {
             }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class) @Composable
-fun ComposeTopBar() {
-    TopAppBar( navigationIcon = {
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Rounded.Menu, contentDescription = "Menu") }
-    },
-        title = { Text("កម្មវ%ធីែខ្មរេយើង") },
-        colors = topAppBarColors(
-            containerColor = Color(0xFFE91E63), titleContentColor = Color.White, navigationIconContentColor = Color.White, actionIconContentColor = Color.White,
-        ),
-        actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Rounded.Share, contentDescription = "Share") }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Rounded.Settings, contentDescription = "Settings") }
-        }
-    )
-}
-
-@Composable
-fun ComposableBottomAppBar() {
-    BottomAppBar(
-        containerColor = Color.Black, contentColor = Color.White,
-        actions = {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Rounded.Home, contentDescription = "Home")
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Rounded.Search, contentDescription = "Cart")
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Rounded.PlayArrow, contentDescription = "Play")
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Rounded.List, contentDescription = "List")
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Rounded.MoreVert, contentDescription = "More")
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-            }
-        },
-        modifier = Modifier.height(50.dp)
-    )
 }
