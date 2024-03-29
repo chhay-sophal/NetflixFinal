@@ -60,6 +60,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.R
+import com.example.netflix_final.components.ComposableBottomAppBar
 import com.example.netflix_final.models.CastModel
 import com.example.netflix_final.models.MovieModel
 import com.example.netflix_final.models.featureFilms
@@ -121,6 +122,9 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
                 }
             )
         },
+        bottomBar = {
+            ComposableBottomAppBar(navController)
+        },
         contentColor = Color.White,
         containerColor = Color.Black
     ) { paddingValues ->
@@ -176,7 +180,7 @@ fun Content(verticalScrollState: ScrollState, horizontalScrollState: ScrollState
                     endY = 1600f,
                 )
             )
-            .padding(bottom = 20.dp)
+            .padding(bottom = 60.dp)
     ) {
         Column(
             modifier = Modifier
@@ -475,13 +479,13 @@ fun MoreLikeThisSection(navController: NavController) {
             LazyRow {
                 items(moreLikeThis.size) {
                     Surface(
-                        modifier = Modifier.width(110.dp).padding(vertical = 10.dp).padding(horizontal = 5.dp),
+                        modifier = Modifier.width(110.dp).height(170.dp).padding(vertical = 10.dp).padding(horizontal = 5.dp),
                         shape = RoundedCornerShape(1.dp),
                         onClick = {
                             navController.navigate("movie-details/${moreLikeThis[it].title}")
                         }
                     ) {
-                        AsyncImage(model = moreLikeThis[it].image, contentDescription = null)
+                        AsyncImage(model = moreLikeThis[it].image, contentDescription = null, contentScale = ContentScale.Crop)
                     }
                 }
             }

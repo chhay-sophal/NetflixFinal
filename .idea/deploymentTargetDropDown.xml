@@ -11,6 +11,9 @@
       <entry key="PreviewMovieDetailsScreen">
         <State />
       </entry>
+      <entry key="PreviewSettingsScreen">
+        <State />
+      </entry>
       <entry key="app">
         <State />
       </entry>

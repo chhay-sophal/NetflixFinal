@@ -103,7 +103,7 @@ fun MyListScreenContent(navController: NavController) {
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
     ) {
-        Text(text = "My List", fontWeight = FontWeight.Bold, fontSize = 30.sp, color = Color.LightGray, modifier = Modifier.padding(bottom = 10.dp))
+        Text(text = "My List", fontWeight = FontWeight.Bold, fontSize = 30.sp, color = Color.LightGray, modifier = Modifier.padding(bottom = 10.dp, start = 15.dp))
 
         for (i in 0 until myList.size step 2) {
             Row(modifier = Modifier

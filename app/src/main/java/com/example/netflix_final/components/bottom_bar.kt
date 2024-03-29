@@ -26,7 +26,6 @@ import androidx.navigation.NavController
 
 @Composable
 fun ComposableBottomAppBar(navController: NavController) {
-    val routes = listOf("home", "search", "my-list", "profile", "more")
     val currentRoute = navController.currentDestination?.route
     BottomAppBar(
         containerColor = Color.Black, contentColor = Color.White,
@@ -58,8 +57,10 @@ fun ComposableBottomAppBar(navController: NavController) {
                         Icon(Icons.Rounded.Person, contentDescription = "Profile", tint = iconColor)
                     }
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        val iconColor = if (currentRoute == "profile") Color.Red else Color.White
+                    IconButton(onClick = {
+                        navController.navigate("settings")
+                    }) {
+                        val iconColor = if (currentRoute == "settings") Color.Red else Color.White
                         Icon(Icons.Rounded.Settings, contentDescription = "Settings", tint = iconColor)
                     }
                     Spacer(modifier = Modifier.weight(1f))

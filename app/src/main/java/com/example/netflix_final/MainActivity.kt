@@ -34,6 +34,7 @@ import com.example.netflix_final.screens.HomeScreen
 import com.example.netflix_final.screens.SignInScreen
 import com.example.netflix_final.screens.MovieDetailsScreen
 import com.example.netflix_final.screens.MyListScreen
+import com.example.netflix_final.screens.SettingsScreen
 import com.example.netflix_final.screens.WhoIsWatchingScreen
 
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
@@ -87,6 +88,9 @@ fun ComposeNavScreen() {
         }
         composable("my-list") {
             MyListScreen(navController = navController)
+        }
+        composable("settings") {
+            SettingsScreen(navController = navController)
         }
     }
 }
