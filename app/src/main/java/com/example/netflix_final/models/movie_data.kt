@@ -5,7 +5,7 @@ import androidx.annotation.RequiresApi
 
 data class GenreModel(val name: String)
 
-data class MovieModel(val title: String, val description: String, val genre: List<GenreModel>,  val year: Int, val duration: Int, val image: String, val cast: List<CastModel>? = null)
+data class MovieModel(val title: String, val description: String, val genre: List<GenreModel>? = null,  val year: Int? = null, val duration: Int? = null, val image: String, val cast: List<CastModel>? = null)
 
 fun formatDuration(minutes: Int): String {
     val hours = minutes / 60
@@ -47,16 +47,6 @@ var featureFilms: MutableList<MovieModel> = mutableListOf(
         year = 2003,
         duration = 201,
         image = "https://www.themoviedb.org/t/p/original/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg",
-        cast = duneCastList
-    ),
-
-    MovieModel(
-        "Interstellar",
-        "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-        listOf(GenreModel("Adventure"), GenreModel("Drama"), GenreModel("Sci-Fi")),
-        2014,
-        169,
-        "https://www.themoviedb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
         cast = duneCastList
     ),
 

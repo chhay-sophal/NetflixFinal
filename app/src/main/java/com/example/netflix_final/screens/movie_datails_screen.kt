@@ -26,6 +26,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Settings
@@ -61,6 +62,7 @@ import com.example.netflix_final.models.CastModel
 import com.example.netflix_final.models.MovieModel
 import com.example.netflix_final.models.featureFilms
 import com.example.netflix_final.models.formatDuration
+import com.example.netflix_final.models.myList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable()
@@ -87,7 +89,7 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
                         Surface(
                             color = Color.Transparent,
                             onClick = {
-                                navController.navigate("home")
+                                navController.navigateUp()
                             }
                         ) {
                             Icon(imageVector = Icons.Rounded.Close, contentDescription = null, tint = Color.White)
@@ -184,12 +186,14 @@ fun TitleAndInfo(movie: MovieModel) {
 //                Info
     Column() {
         Text(text = "Year: " + movie.year.toString(), fontWeight = FontWeight.Normal)
-        Text(text = "Duration: " + formatDuration(movie.duration), fontWeight = FontWeight.Normal)
+        Text(text = "Duration: " + movie.duration?.let { formatDuration(it) }, fontWeight = FontWeight.Normal)
         Row {
             Text(text = "Genre:", fontWeight = FontWeight.Normal)
             LazyRow {
-                items(movie.genre.size) {
-                    Text(text = movie.genre[it].name, fontWeight = FontWeight.Normal, modifier = Modifier.padding(horizontal = 5.dp))
+                movie.genre?.let {
+                    items(it.size) {
+                        Text(text = movie.genre[it].name, fontWeight = FontWeight.Normal, modifier = Modifier.padding(horizontal = 5.dp))
+                    }
                 }
             }
         }
@@ -197,6 +201,7 @@ fun TitleAndInfo(movie: MovieModel) {
 }
 
 // Play and Download button
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable()
 fun PlayAndDownloadButtons(movie: MovieModel) {
     //                Play Button
@@ -261,9 +266,21 @@ fun PlayAndDownloadButtons(movie: MovieModel) {
         color = Color.DarkGray,
         contentColor = Color.Gray,
         onClick = {
-            Toast.makeText( context,
-                "Added to My List",
-                Toast.LENGTH_SHORT ).show()
+            if (myList.contains(movie)) {
+                myList.removeAll { it == movie } // Safely remove movie from myList
+                Toast.makeText(
+                    context,
+                    "${movie.title} removed from My List",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                myList.add(movie) // Safely add movie to myList
+                Toast.makeText(
+                    context,
+                    "${movie.title} added to My List",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     ){
         Row(
@@ -271,8 +288,13 @@ fun PlayAndDownloadButtons(movie: MovieModel) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Icon(imageVector = Icons.Rounded.AddCircle, contentDescription = null, tint = Color.Gray)
-            Text(text = "Add to My List", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
+            if (myList.contains(movie)) {
+                Icon(imageVector = Icons.Rounded.Delete, contentDescription = null, tint = Color.Gray)
+                Text(text = "Remove from My List", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
+            } else {
+                Icon(imageVector = Icons.Rounded.AddCircle, contentDescription = null, tint = Color.Gray)
+                Text(text = "Add to My List", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
+            }
         }
     }
 }
