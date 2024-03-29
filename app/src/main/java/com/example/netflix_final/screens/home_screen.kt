@@ -90,7 +90,7 @@ import java.time.Year
 @Composable
 fun HomeScreen(navController: NavController) {
     Scaffold(
-        bottomBar = { ComposableBottomAppBar() }
+        bottomBar = { ComposableBottomAppBar( navController = navController ) }
     ){ paddingValues ->
         Box(
             modifier = Modifier
@@ -449,7 +449,7 @@ fun ComposeTopBar() {
 }
 
 @Composable
-fun ComposableBottomAppBar() {
+fun ComposableBottomAppBar(navController: NavController) {
     BottomAppBar(
         containerColor = Color.Black, contentColor = Color.White,
         actions = {
@@ -460,8 +460,8 @@ fun ComposableBottomAppBar() {
                         Icon(Icons.Rounded.Home, contentDescription = "Home")
                     }
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Rounded.Search, contentDescription = "Cart")
+                    IconButton(onClick = { navController.navigate("search-screen") }) {
+                        Icon(Icons.Rounded.Search, contentDescription = "Search")
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = { /*TODO*/ }) {

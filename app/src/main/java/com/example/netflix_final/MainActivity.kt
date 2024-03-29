@@ -20,6 +20,7 @@ import com.example.netflix_final.screens.HomeScreen
 import com.example.netflix_final.screens.SignInScreen
 import com.example.netflix_final.screens.WhoIsWatchingScreen
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
+import com.example.netflix_final.screens.SearchScreen
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -65,6 +66,10 @@ fun ComposeNavScreen() {
 //            val selectedMovie = movieList1.first {it.name == movieName}
 //            DetailScreen(navController, selectedMovie);
 //        }
+
+        composable("search-screen"){
+            SearchScreen(navController = navController)
+        }
     }
 }
 
