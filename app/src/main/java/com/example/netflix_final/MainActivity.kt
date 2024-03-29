@@ -34,6 +34,7 @@ import com.example.netflix_final.screens.HomeScreen
 import com.example.netflix_final.screens.SignInScreen
 import com.example.netflix_final.screens.MovieDetailsScreen
 import com.example.netflix_final.screens.MyListScreen
+import com.example.netflix_final.screens.PlayingScreen
 import com.example.netflix_final.screens.SettingsScreen
 import com.example.netflix_final.screens.WhoIsWatchingScreen
 
@@ -91,6 +92,14 @@ fun ComposeNavScreen() {
         }
         composable("settings") {
             SettingsScreen(navController = navController)
+        }
+        composable(
+            "play/{title}" ,
+            arguments = listOf(navArgument("title") { type = NavType.StringType })
+        ) {backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title")
+            val selectedMovie = movieList.first {it.title == title}
+            PlayingScreen(navController = navController, movie = selectedMovie)
         }
     }
 }

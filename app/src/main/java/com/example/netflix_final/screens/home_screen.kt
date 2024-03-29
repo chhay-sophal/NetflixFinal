@@ -399,11 +399,7 @@ fun MovieCard(navController: NavController, movie: MovieModel) {
                     }
                     Button(
                         onClick = {
-                            Toast.makeText(
-                                context,
-                                "Categories",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            navController.navigate("play/${movie.title}")
                         },
                         colors = ButtonDefaults.buttonColors(Color.White),
                         shape = RoundedCornerShape(0.dp),

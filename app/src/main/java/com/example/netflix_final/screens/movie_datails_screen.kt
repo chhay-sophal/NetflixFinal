@@ -189,7 +189,7 @@ fun Content(verticalScrollState: ScrollState, horizontalScrollState: ScrollState
         ) {
             TitleAndInfo(movie = movie)
 
-            PlayAndDownloadButtons(movie = movie)
+            PlayAndDownloadButtons(movie = movie, navController = navController)
 
             DescriptionsSection(movie = movie)
 
@@ -252,7 +252,7 @@ fun TitleAndInfo(movie: MovieModel) {
 // Play and Download button
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable()
-fun PlayAndDownloadButtons(movie: MovieModel) {
+fun PlayAndDownloadButtons(movie: MovieModel, navController: NavController) {
 //Play Button
     val context = LocalContext.current
     Surface(
@@ -264,7 +264,9 @@ fun PlayAndDownloadButtons(movie: MovieModel) {
         shape = RoundedCornerShape(5.dp),
         color = Color.White,
         contentColor = Color.Black,
-        onClick = { }
+        onClick = {
+            navController.navigate("play/${movie.title}")
+        }
     ){
         Row(
             modifier = Modifier.fillMaxSize(),
