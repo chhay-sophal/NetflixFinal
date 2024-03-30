@@ -5,27 +5,37 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.netflix_final.models.movieList
 
 import com.example.netflix_final.Starter.FirstApp
 import com.example.netflix_final.Starter.FourthApp
 import com.example.netflix_final.Starter.Login
 import com.example.netflix_final.Starter.SecondApp
 import com.example.netflix_final.Starter.ThirdApp
+import com.example.netflix_final.models.featureFilms
 
 import com.example.netflix_final.screens.FirstTimeScreen
 import com.example.netflix_final.screens.HomeScreen
 import com.example.netflix_final.screens.SignInScreen
+import com.example.netflix_final.screens.MovieDetailsScreen
+import com.example.netflix_final.screens.MyListScreen
+import com.example.netflix_final.screens.PlayingScreen
+import com.example.netflix_final.screens.SettingsScreen
 import com.example.netflix_final.screens.WhoIsWatchingScreen
 
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
@@ -49,10 +59,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ComposeNavScreen() {
     val navController = rememberNavController()
+    val featureFilmsPagerState = rememberPagerState( pageCount = { featureFilms.size } )
+    val homePageScrollState = rememberScrollState()
 
     NavHost(navController = navController, startDestination = "first-screen") {
         composable("first-screen") {
@@ -65,7 +78,29 @@ fun ComposeNavScreen() {
             WhoIsWatchingScreen(navController = navController)
         }
         composable("home") {
-            HomeScreen(navController = navController)
+            HomeScreen(navController, featureFilmsPagerState, homePageScrollState)
+        }
+        composable(
+            "movie-details/{title}",
+            arguments = listOf(navArgument("title") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title")
+            val selectedMovie = movieList.first {it.title == title}
+            MovieDetailsScreen(navController = navController, movie = selectedMovie);
+        }
+        composable("my-list") {
+            MyListScreen(navController = navController)
+        }
+        composable("settings") {
+            SettingsScreen(navController = navController)
+        }
+        composable(
+            "play/{title}" ,
+            arguments = listOf(navArgument("title") { type = NavType.StringType })
+        ) {backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title")
+            val selectedMovie = movieList.first {it.title == title}
+            PlayingScreen(navController = navController, movie = selectedMovie)
         }
 //        composable(
 //            "detail/{movieName}",
@@ -76,7 +111,7 @@ fun ComposeNavScreen() {
 //            DetailScreen(navController, selectedMovie);
 //        }
 
-        composable("search-screen"){
+        composable("search"){
             SearchScreen(navController = navController)
         }
     }
