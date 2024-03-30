@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -48,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import com.example.netflix_final.components.ComposableBottomAppBar
 import com.example.netflix_final.models.Anime
 import com.example.netflix_final.models.MovieModel
 import com.example.netflix_final.models.SearchMovieModel
@@ -65,7 +67,7 @@ fun PreviewSearchScreen() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MovieContent() {
+fun MovieContent(navController: NavController) {
     Surface(
         modifier = Modifier.padding(10.dp),
         shape = RoundedCornerShape(20.dp),
@@ -82,7 +84,7 @@ fun MovieContent() {
                     Text(text = "Movies & Tv", fontSize = 17.sp, fontWeight = FontWeight.Medium, color = Color.White, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                     LazyRow {
                         items(continueWatching.size) {
-                            MovieCardImage(movie = continueWatching[it])
+                            MovieCardImage(movie = continueWatching[it], navController = navController)
                         }
                     }
                 }
@@ -98,7 +100,7 @@ fun MovieContent() {
                     Text(text = "Romantic TV Shows", fontSize = 17.sp, fontWeight = FontWeight.Medium, color = Color.White, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                     LazyRow {
                         items(likeDune.size) {
-                            MovieCardImage(movie = likeDune[it])
+                            MovieCardImage(movie = likeDune[it], navController = navController)
                         }
                     }
                 }
@@ -114,7 +116,7 @@ fun MovieContent() {
                     Text(text = "New on NetFlix", fontSize = 17.sp, fontWeight = FontWeight.Medium, color = Color.White, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                     LazyRow {
                         items(likeDune.size) {
-                            MovieCardImage(movie = likeDune[it])
+                            MovieCardImage(movie = likeDune[it], navController = navController)
                         }
                     }
                 }
@@ -130,7 +132,7 @@ fun MovieContent() {
                     Text(text = "Anime", fontSize = 17.sp, fontWeight = FontWeight.Medium, color = Color.White, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                     LazyRow {
                         items(Anime.size) {
-                            MovieCardImage(searchMovieModel = Anime[it])
+                            MovieCardImage(searchMovieModel = Anime[it], navController = navController)
                         }
                     }
                 }
@@ -151,28 +153,31 @@ fun SearchScreen(navController : NavController){
             )
         },
         bottomBar = {
-            ComposableBottomAppBar(navController = rememberNavController() )
+            ComposableBottomAppBar(navController = navController )
         },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
                     .padding(paddingValues)
             ) {
-                MovieContent()
+                MovieContent(navController)
             }
         }
     )
 }
 
 @Composable
-fun MovieCardImage(movie: MovieModel? = null, searchMovieModel: SearchMovieModel? = null) {
-    Box(modifier = Modifier
+fun MovieCardImage(movie: MovieModel? = null, searchMovieModel: SearchMovieModel? = null, navController: NavController) {
+    Surface(modifier = Modifier
         .width(110.dp)
         .height(160.dp)
-        .padding(start = 10.dp)
+        .padding(start = 10.dp),
+        onClick = {
+            navController.navigate("movie-details/${movie?.title}")
+        }
     ) {
         movie?.let {
-            AsyncImage(model = it.image, contentDescription = it.description, modifier = Modifier.fillMaxSize())
+            AsyncImage(model = it.image, contentDescription = it.description, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
         }
     }
 }
@@ -180,7 +185,6 @@ fun MovieCardImage(movie: MovieModel? = null, searchMovieModel: SearchMovieModel
 
 @Composable
 fun SearchTopBar(
-
     searchText: String,
     onTextChange: (String) -> Unit,
 ) {
@@ -196,7 +200,7 @@ fun SearchTopBar(
                 .fillMaxWidth()
                 .background(Color.Black),
             horizontalArrangement = Arrangement.Start,
-
+            verticalAlignment = Alignment.CenterVertically
         ) {
             TextField(
                 value = searchText,
@@ -222,7 +226,7 @@ fun SearchTopBar(
                         imageVector = Icons.Rounded.Clear,
                         contentDescription = "Clear Input Icon",
                         modifier = Modifier
-                            .clickable{ searchText.replace(searchText,"") }
+                            .clickable { searchText.replace(searchText, "") }
                             .size(20.dp)
                             .clip(CircleShape)
                             .background(color = Color.Gray)
@@ -232,15 +236,25 @@ fun SearchTopBar(
 
             val coroutineScope = rememberCoroutineScope()
             val keyboardController = LocalSoftwareKeyboardController.current
-            Button(
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                color = Color.Black,
+                contentColor = Color.White,
                 onClick = {
                     coroutineScope.launch {
                         keyboardController?.hide()
                     }
                 },
-                colors = ButtonDefaults.buttonColors(Color.Transparent, contentColor = Color.White),
+                shape = RoundedCornerShape(30.dp)
             ) {
-                Text(text = "Cancel", fontSize = 8.sp)
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(
+                        text = "Cancel",
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
