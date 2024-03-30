@@ -29,6 +29,7 @@ import com.example.netflix_final.Starter.SecondApp
 import com.example.netflix_final.Starter.ThirdApp
 import com.example.netflix_final.models.featureMovies
 import com.example.netflix_final.screens.ActorScreen
+import com.example.netflix_final.screens.CategoryScreen
 import com.example.netflix_final.screens.DownloadScreen
 
 import com.example.netflix_final.screens.FirstTimeScreen
@@ -42,6 +43,7 @@ import com.example.netflix_final.screens.WhoIsWatchingScreen
 
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
 import com.example.netflix_final.screens.SearchScreen
+import com.example.netflix_final.screens.SelectionScreen
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -81,6 +83,22 @@ fun ComposeNavScreen() {
         }
         composable("home") {
             HomeScreen(navController, featureFilmsPagerState, homePageScrollState)
+        }
+        composable("home/tv-shows") {
+            SelectionScreen(navController = navController, "TV Shows")
+        }
+        composable("home/movies") {
+            SelectionScreen(navController = navController, "Movies")
+        }
+        composable("home/categories") {
+            SelectionScreen(navController = navController, "Categories")
+        }
+        composable(
+            "home/categories/{category}",
+            arguments = listOf(navArgument("category") { type = NavType.StringType })
+        ) {backStackEntry ->
+            val category = backStackEntry.arguments?.getString("category")
+            CategoryScreen(navController = navController, category)
         }
         composable(
             "movie-details/{title}",

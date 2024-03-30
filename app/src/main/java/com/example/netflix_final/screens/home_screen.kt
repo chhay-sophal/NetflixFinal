@@ -138,13 +138,9 @@ fun HomeScreenContent(navController: NavController, pagerState: PagerState, scro
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    val context = LocalContext.current
-
                     Button(
                         onClick = {
-                            Toast.makeText( context,
-                                "TV Shows",
-                                Toast.LENGTH_SHORT ).show()
+                            navController.navigate("home/tv-shows")
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp)
@@ -153,9 +149,7 @@ fun HomeScreenContent(navController: NavController, pagerState: PagerState, scro
                     }
                     Button(
                         onClick = {
-                            Toast.makeText( context,
-                                "Movies",
-                                Toast.LENGTH_SHORT ).show()
+                            navController.navigate("home/movies")
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp)
@@ -164,9 +158,7 @@ fun HomeScreenContent(navController: NavController, pagerState: PagerState, scro
                     }
                     Button(
                         onClick = {
-                            Toast.makeText( context,
-                                "Categories",
-                                Toast.LENGTH_SHORT ).show()
+                            navController.navigate("home/categories")
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp)

@@ -39,7 +39,7 @@ fun ComposableBottomAppBar(navController: NavController) {
                     IconButton(onClick = {
                         navController.navigate("home")
                     }) {
-                        val iconColor = if (currentRoute == "home") Color.Red else Color.White
+                        val iconColor = if (currentRoute?.startsWith("home") == true) Color.Red else Color.White
                         Icon(Icons.Rounded.Home, contentDescription = "Home", tint = iconColor)
                     }
                     Spacer(modifier = Modifier.weight(1f))
