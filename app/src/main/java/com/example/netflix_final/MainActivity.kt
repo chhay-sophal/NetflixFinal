@@ -29,6 +29,7 @@ import com.example.netflix_final.Starter.SecondApp
 import com.example.netflix_final.Starter.ThirdApp
 import com.example.netflix_final.models.featureMovies
 import com.example.netflix_final.screens.ActorScreen
+import com.example.netflix_final.screens.DownloadScreen
 
 import com.example.netflix_final.screens.FirstTimeScreen
 import com.example.netflix_final.screens.HomeScreen
@@ -91,6 +92,9 @@ fun ComposeNavScreen() {
         }
         composable("my-list") {
             MyListScreen(navController = navController)
+        }
+        composable("download") {
+            DownloadScreen(navController = navController)
         }
         composable("settings") {
             SettingsScreen(navController = navController)

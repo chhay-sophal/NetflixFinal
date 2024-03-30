@@ -5,10 +5,10 @@
       <entry key="PreviewActorScreen">
         <State />
       </entry>
-      <entry key="PreviewPlayingScreen">
+      <entry key="PreviewDownloadScreen">
         <State />
       </entry>
-      <entry key="PreviewSettingsScreen">
+      <entry key="PreviewPlayingScreen">
         <State />
       </entry>
       <entry key="RemoveActor">

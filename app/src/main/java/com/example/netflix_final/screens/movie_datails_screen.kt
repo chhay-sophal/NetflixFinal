@@ -24,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Share
@@ -60,6 +61,7 @@ import com.example.netflix_final.R
 import com.example.netflix_final.components.ComposableBottomAppBar
 import com.example.netflix_final.models.ActorModel
 import com.example.netflix_final.models.MovieModel
+import com.example.netflix_final.models.download
 import com.example.netflix_final.models.moreLikeThis
 import com.example.netflix_final.models.myList
 import com.example.netflix_final.utils.formatDuration
@@ -290,9 +292,18 @@ fun PlayAndDownloadButtons(movie: MovieModel, navController: NavController) {
         color = Color.DarkGray,
         contentColor = Color.Gray,
         onClick = {
-            Toast.makeText( context,
-                "Downloading...",
-                Toast.LENGTH_SHORT ).show()
+            if (download.contains(movie)) {
+                download.remove(movie)
+                Toast.makeText( context,
+                    "Removed from download",
+                    Toast.LENGTH_SHORT ).show()
+            } else {
+                download.add(movie)
+                Toast.makeText( context,
+                    "Downloaded",
+                    Toast.LENGTH_SHORT ).show()
+            }
+
         }
     ){
         Row(
@@ -300,8 +311,13 @@ fun PlayAndDownloadButtons(movie: MovieModel, navController: NavController) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            AsyncImage(model = R.drawable.download_icon_gray, contentDescription = null, modifier = Modifier.size(30.dp))
-            Text(text = "Download", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
+            if (download.contains(movie)) {
+                Icon(imageVector = Icons.Rounded.Delete, contentDescription = null)
+                Text(text = "Remove From Download", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
+            } else {
+                AsyncImage(model = R.drawable.download_icon_gray, contentDescription = null, modifier = Modifier.size(30.dp))
+                Text(text = "Download", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
+            }
         }
     }
 }

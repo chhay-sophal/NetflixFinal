@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.List
@@ -23,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import com.example.netflix_final.R
 
 @Composable
 fun ComposableBottomAppBar(navController: NavController) {
@@ -52,6 +55,16 @@ fun ComposableBottomAppBar(navController: NavController) {
                     }) {
                         val iconColor = if (currentRoute == "my-list") Color.Red else Color.White
                         Icon(Icons.Rounded.List, contentDescription = "List", tint = iconColor)
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = {
+                        navController.navigate("download")
+                    }) {
+                        if (currentRoute == "download") {
+                            AsyncImage(model = R.drawable.download_icon_red, contentDescription = null, modifier = Modifier.size(17.dp))
+                        } else {
+                            AsyncImage(model = R.drawable.download_icon_white, contentDescription = null, modifier = Modifier.size(17.dp))
+                        }
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = { /*TODO*/ }) {
