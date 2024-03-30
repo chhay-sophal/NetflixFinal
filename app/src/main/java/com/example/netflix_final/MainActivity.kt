@@ -28,6 +28,7 @@ import com.example.netflix_final.Starter.Login
 import com.example.netflix_final.Starter.SecondApp
 import com.example.netflix_final.Starter.ThirdApp
 import com.example.netflix_final.models.featureMovies
+import com.example.netflix_final.screens.ActorScreen
 
 import com.example.netflix_final.screens.FirstTimeScreen
 import com.example.netflix_final.screens.HomeScreen
@@ -113,6 +114,13 @@ fun ComposeNavScreen() {
 
         composable("search"){
             SearchScreen(navController = navController)
+        }
+        composable(
+            "actor/{name}" ,
+            arguments = listOf(navArgument("name") { type = NavType.StringType })
+        ) {backStackEntry ->
+            val name = backStackEntry.arguments?.getString("name")
+            ActorScreen(navController = navController, actorName = name)
         }
     }
 }

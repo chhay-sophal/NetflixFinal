@@ -310,7 +310,7 @@ fun HomeScreenContent(navController: NavController, pagerState: PagerState, scro
                         Text(text = "Coming Soon", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(moreLikeThis.size) {
-                                MovieBox(navController = navController, movie = moreLikeThis[it])
+                                moreLikeThis[it]?.let { it1 -> MovieBox(navController = navController, movie = it1) }
                             }
                         }
                     }
@@ -464,11 +464,7 @@ fun MovieCard(navController: NavController, movie: MovieModel) {
                     }
                     Button(
                         onClick = {
-                            Toast.makeText(
-                                context,
-                                "Movies",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            navController.navigate("movie-details/${movie.title}")
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp),

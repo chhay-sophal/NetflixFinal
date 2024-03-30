@@ -58,7 +58,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.R
 import com.example.netflix_final.components.ComposableBottomAppBar
-import com.example.netflix_final.models.CastModel
+import com.example.netflix_final.models.ActorModel
 import com.example.netflix_final.models.MovieModel
 import com.example.netflix_final.models.moreLikeThis
 import com.example.netflix_final.models.myList
@@ -149,7 +149,7 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
 @Preview(showSystemUi = true)
 @Composable()
 fun PreviewMovieDetailsScreen() {
-    MovieDetailsScreen(navController = rememberNavController(), movie = moreLikeThis[1])
+    moreLikeThis[1]?.let { MovieDetailsScreen(navController = rememberNavController(), movie = it) }
 }
 
 @Composable
@@ -194,13 +194,11 @@ fun Content(verticalScrollState: ScrollState, horizontalScrollState: ScrollState
 
             DescriptionsSection(movie = movie)
 
-            TrailerSection(movie = movie)
+            TrailerSection(movie = movie, navController)
 
-            BonusContentSection(movie = movie, horizontalScrollState = horizontalScrollState)
+            BonusContentSection(movie = movie, horizontalScrollState = horizontalScrollState, navController)
 
-            if (movie.cast?.isNotEmpty() == true) {
-                CastSection(cast = movie.cast)
-            }
+            movie.cast?.let { CastSection(cast = it, navController) }
 
             MoreLikeThisSection(navController = navController)
         }
@@ -320,7 +318,7 @@ fun DescriptionsSection(movie: MovieModel) {
 
 // Trailer
 @Composable()
-fun TrailerSection(movie: MovieModel) {
+fun TrailerSection(movie: MovieModel, navController: NavController) {
     Column(modifier = Modifier.width(180.dp)) {
         Text(text = "Trailer", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
         Surface(
@@ -336,7 +334,9 @@ fun TrailerSection(movie: MovieModel) {
                     .background(Color.Transparent)
                     .size(100.dp),
                 colors = ButtonDefaults.buttonColors(Color.Transparent),
-                onClick = { /*TODO*/ }
+                onClick = {
+                    navController.navigate("play/${movie.title}")
+                }
             ) {
                 Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null, tint = Color.White, modifier = Modifier.fillMaxSize())
             }
@@ -347,7 +347,7 @@ fun TrailerSection(movie: MovieModel) {
 
 // Bonus Content
 @Composable()
-fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
+fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState, navController: NavController) {
     Column(
         modifier = Modifier.padding(top = 40.dp)
     ) {
@@ -375,7 +375,9 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
                                 .background(Color.Transparent)
                                 .size(100.dp),
                             colors = ButtonDefaults.buttonColors(Color.Transparent),
-                            onClick = { /*TODO*/ }
+                            onClick = {
+                                navController.navigate("play/${movie.title}")
+                            }
                         ) {
                             Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null, tint = Color.White, modifier = Modifier.fillMaxSize())
                         }
@@ -441,7 +443,7 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
 
 // Cast Content
 @Composable()
-fun CastSection(cast: List<CastModel>) {
+fun CastSection(cast: List<ActorModel?>, navController: NavController) {
     Column(
         modifier = Modifier.padding(top = 40.dp)
     ) {
@@ -449,22 +451,29 @@ fun CastSection(cast: List<CastModel>) {
         Box(modifier = Modifier.padding(top = 10.dp)) {
             LazyRow {
                 items(cast.size) {
-                    Column(
-                        modifier = Modifier
-                            .padding(end = 20.dp)
-                            .width(100.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Surface(
-                            modifier = Modifier
-                                .height(100.dp)
-                                .width(100.dp),
-                            shape = CircleShape
-                        ) {
-                            AsyncImage(model = cast[it].imageUrl, contentDescription = null, contentScale = ContentScale.Crop)
+                    cast[it].let { it1 ->
+                        if (it1 != null) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(end = 20.dp)
+                                    .width(100.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Surface(
+                                    modifier = Modifier
+                                        .height(100.dp)
+                                        .width(100.dp),
+                                    shape = CircleShape,
+                                    onClick = {
+                                        navController.navigate("actor/${cast[it]?.name}")
+                                    }
+                                ) {
+                                    AsyncImage(model = cast[it]?.image, contentDescription = null, contentScale = ContentScale.Crop)
+                                }
+                                Text(text = it1.name, modifier = Modifier.padding(top = 5.dp), textAlign = TextAlign.Center)
+                            }
                         }
-                        Text(text = cast[it].actorName, modifier = Modifier.padding(top = 5.dp), textAlign = TextAlign.Center)
                     }
                 }
             }
@@ -491,10 +500,10 @@ fun MoreLikeThisSection(navController: NavController) {
                             .padding(horizontal = 5.dp),
                         shape = RoundedCornerShape(1.dp),
                         onClick = {
-                            navController.navigate("movie-details/${moreLikeThis[it].title}")
+                            navController.navigate("movie-details/${moreLikeThis[it]?.title}")
                         }
                     ) {
-                        AsyncImage(model = moreLikeThis[it].image, contentDescription = null, contentScale = ContentScale.Crop)
+                        AsyncImage(model = moreLikeThis[it]?.image, contentDescription = null, contentScale = ContentScale.Crop)
                     }
                 }
             }

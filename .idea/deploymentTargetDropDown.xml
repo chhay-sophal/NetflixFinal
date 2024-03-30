@@ -2,19 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="HomeScreenPreview">
-        <State />
-      </entry>
-      <entry key="PreviewMovieDetailsSarah">
-        <State />
-      </entry>
-      <entry key="PreviewMovieDetailsScreen">
+      <entry key="PreviewActorScreen">
         <State />
       </entry>
       <entry key="PreviewPlayingScreen">
         <State />
       </entry>
       <entry key="PreviewSettingsScreen">
+        <State />
+      </entry>
+      <entry key="RemoveActor">
+        <State />
+      </entry>
+      <entry key="Run">
         <State />
       </entry>
       <entry key="app">

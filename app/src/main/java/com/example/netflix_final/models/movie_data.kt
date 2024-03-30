@@ -7,7 +7,7 @@ data class GenreModel(val name: String)
 
 data class SearchMovieModel(val title: String, val image: String)
 
-data class MovieModel(val title: String, val description: String? = null, val genre: List<GenreModel>? = null,  val year: Int? = null, val duration: Int? = null, val image: String? = null, val cast: List<CastModel>? = null)
+data class MovieModel(val title: String, val description: String? = null, val genre: List<GenreModel>? = null, val year: Int? = null, val duration: Int? = null, val image: String? = null, val cast: List<ActorModel?>? = null)
 
 @RequiresApi(Build.VERSION_CODES.O)
 val movieList: MutableList<MovieModel> = mutableListOf(
@@ -49,11 +49,11 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         duration = 390, // in minutes (total duration of all episodes)
         image = "https://media.themoviedb.org/t/p/w500/zU0htwkhNvBQdVSIKB9s6hgVeFK.jpg",
         cast = listOf(
-            CastModel("Anya Taylor-Joy", "Beth Harmon"),
-            CastModel("Bill Camp", "Mr. Shaibel"),
-            CastModel("Moses Ingram", "Jolene"),
-            CastModel("Marielle Heller", "Alma Wheatley"),
-            CastModel("Thomas Brodie-Sangster", "Benny Watts")
+            ActorModel("Anya Taylor-Joy", "Beth Harmon"),
+            ActorModel("Bill Camp", "Mr. Shaibel"),
+            ActorModel("Moses Ingram", "Jolene"),
+            ActorModel("Marielle Heller", "Alma Wheatley"),
+            ActorModel("Thomas Brodie-Sangster", "Benny Watts")
             // Add more cast members as needed
         )
     ),
@@ -84,6 +84,18 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         cast = falconAndWinterSoldierCastList
     ),
     MovieModel(
+        title = "Blade Runner 2049",
+        description = "A blade runner must pursue and terminate four replicants who stole a ship in space, and have returned to Earth to find their creator.",
+        genre = listOf(
+            GenreModel("Sci-Fi"),
+            GenreModel("Thriller")
+        ),
+        year = 2017,
+        duration = 163, // in minutes
+        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
+        cast = bladeRunner2049CastList
+    ),
+    MovieModel(
         title = "Blade Runner",
         description = "A blade runner must pursue and terminate four replicants who stole a ship in space, and have returned to Earth to find their creator.",
         genre = listOf(
@@ -92,7 +104,7 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         ),
         year = 1982,
         duration = 117, // in minutes
-        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
+        image = "https://media.themoviedb.org/t/p/w500/63N9uy8nd9j7Eog2axPQ8lbr3Wj.jpg",
         cast = bladeRunnerCastList
     ),
     MovieModel(
@@ -146,7 +158,8 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         genre = listOf(GenreModel("Drama"), GenreModel("Crime")),
         year = 1994,
         duration = (142),
-        image = "https://www.themoviedb.org/t/p/original/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg"
+        image = "https://www.themoviedb.org/t/p/original/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg",
+        cast = shawshankCastList
     ),
     MovieModel(
         "Spider-Man: Into the Spider-Verse",
@@ -155,7 +168,7 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         2018,
         (117),
         "https://www.themoviedb.org/t/p/original/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg",
-        spiderVerseCastList
+        intoTheSpiderVerse
     ),
     MovieModel(
         "Spider-Man: Across the Spider-Verse",
@@ -164,7 +177,7 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         2023,
         (140), // Adjust runtime if known
         "https://media.themoviedb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg", // Update with actual poster URL
-        spiderVerseCastList
+        acrossTheSpiderVerse
     ),
     MovieModel(
         "The Dark Knight",
@@ -270,7 +283,7 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         year = 2018,
         duration = (149),
         image = "https://www.themoviedb.org/t/p/original/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
-        cast = avengersEndgameCastList
+        cast = infinityWarCastList
     ),
     MovieModel(
         title = "Avengers: Endgame",
