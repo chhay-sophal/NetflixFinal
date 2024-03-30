@@ -266,6 +266,7 @@ fun SettingsContent(navController: NavController) {
                     modifier = Modifier.fillMaxWidth(),
                     color = Color.DarkGray,
                     onClick = {
+                        navController.navigate("first-screen")
                     }
                 ) {
                     Text(

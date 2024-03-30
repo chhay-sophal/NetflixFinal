@@ -110,7 +110,7 @@ fun MovieContent(navController: NavController) {
                         .padding(horizontal = 0.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Text(text = "New on NetFlix", fontSize = 17.sp, fontWeight = FontWeight.Medium, color = Color.White, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
+                    Text(text = "New on Netflix", fontSize = 17.sp, fontWeight = FontWeight.Medium, color = Color.White, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                     LazyRow {
                         items(likeDune.size) {
                             MovieCardImage(movie = likeDune[it], navController = navController)
@@ -140,14 +140,15 @@ fun MovieContent(navController: NavController) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SearchScreen(navController : NavController){
-    val currentSearchText = remember { mutableStateOf("") }
+//    val currentSearchText = remember { mutableStateOf("") }
     Scaffold(
         containerColor = Color.Black,
         topBar = {
-            SearchTopBar(
-                searchText = currentSearchText.value,
-                onTextChange = { currentSearchText.value = it },
-            )
+//            SearchTopBar(
+//                searchText = currentSearchText.value,
+//                onTextChange = { currentSearchText.value = it },
+//            )
+                 SearchTopBar()
         },
         bottomBar = {
             ComposableBottomAppBar(navController = navController )
@@ -182,8 +183,8 @@ fun MovieCardImage(movie: MovieModel? = null, searchMovieModel: MovieModel? = nu
 
 @Composable
 fun SearchTopBar(
-    searchText: String,
-    onTextChange: (String) -> Unit,
+//    searchText: String,
+//    onTextChange: (String) -> Unit,
 ) {
     Surface(
         modifier = Modifier
@@ -195,56 +196,58 @@ fun SearchTopBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Black),
+                .background(Color.White),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TextField(
-                value = searchText,
-                onValueChange = onTextChange,
-                maxLines = 1,
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .heightIn(40.dp)
-                    .background(Color.Transparent)
-                    .clip(shape = RoundedCornerShape(10.dp)),
-                placeholder = {
-                    Text(text = "Search...", textAlign = TextAlign.Center)
-                },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Rounded.Search,
-                        contentDescription = "Search Icon",
-                        modifier = Modifier.size(20.dp)
-                    )
-                },
-                trailingIcon = {
-                    Icon(
-                        imageVector = Icons.Rounded.Clear,
-                        contentDescription = "Clear Input Icon",
-                        modifier = Modifier
-                            .clickable { searchText.replace(searchText, "") }
-                            .size(20.dp)
-                            .clip(CircleShape)
-                            .background(color = Color.Gray)
-                    )
-                }
-            )
+            Text(text = "Search...", textAlign = TextAlign.Start, modifier = Modifier.weight(1f).padding(start = 15.dp))
 
-            val coroutineScope = rememberCoroutineScope()
-            val keyboardController = LocalSoftwareKeyboardController.current
+//            TextField(
+//                value = searchText,
+//                onValueChange = onTextChange,
+//                maxLines = 1,
+//                modifier = Modifier
+//                    .fillMaxWidth(0.8f)
+//                    .heightIn(40.dp)
+//                    .background(Color.Transparent)
+//                    .clip(shape = RoundedCornerShape(10.dp)),
+//                placeholder = {
+//                    Text(text = "Search...", textAlign = TextAlign.Center)
+//                },
+//                leadingIcon = {
+//                    Icon(
+//                        imageVector = Icons.Rounded.Search,
+//                        contentDescription = "Search Icon",
+//                        modifier = Modifier.size(20.dp)
+//                    )
+//                },
+//                trailingIcon = {
+//                    Icon(
+//                        imageVector = Icons.Rounded.Clear,
+//                        contentDescription = "Clear Input Icon",
+//                        modifier = Modifier
+//                            .clickable { searchText.replace(searchText, "") }
+//                            .size(20.dp)
+//                            .clip(CircleShape)
+//                            .background(color = Color.Gray)
+//                    )
+//                }
+//            )
+
+//            val coroutineScope = rememberCoroutineScope()
+//            val keyboardController = LocalSoftwareKeyboardController.current
             Surface(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .width(90.dp)
                     .height(50.dp),
                 color = Color.Black,
                 contentColor = Color.White,
                 onClick = {
-                    coroutineScope.launch {
-                        keyboardController?.hide()
-                    }
+//                    coroutineScope.launch {
+//                        keyboardController?.hide()
+//                    }
                 },
-                shape = RoundedCornerShape(30.dp)
+//                shape = RoundedCornerShape(30.dp)
             ) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(
