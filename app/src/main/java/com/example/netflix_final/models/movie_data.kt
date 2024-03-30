@@ -5,6 +5,8 @@ import androidx.annotation.RequiresApi
 
 data class GenreModel(val name: String)
 
+data class SearchMovieModel(val title: String, val image: String)
+
 data class MovieModel(val title: String, val description: String, val genre: List<GenreModel>? = null,  val year: Int? = null, val duration: Int? = null, val image: String, val cast: List<CastModel>? = null)
 
 fun formatDuration(minutes: Int): String {
@@ -29,7 +31,6 @@ var featureFilms: MutableList<MovieModel> = mutableListOf(
         image = "https://media.themoviedb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
         cast = duneCastList
     ),
-
     MovieModel(
         title = "Dune",
         description = "Paul Atreides leads nomadic tribes in a battle to control the desert planet Arrakis.",
@@ -619,6 +620,39 @@ val movieList: MutableList<MovieModel> = mutableListOf(
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
+var Anime: MutableList<SearchMovieModel> = mutableListOf(
+    SearchMovieModel(
+        title = "Attack on Titan",
+        image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg"
+    ),
+    SearchMovieModel(
+        title = "Attack on Titan",
+        image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg"
+    ),
+    SearchMovieModel(
+        title = "Attack on Titan",
+        image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg"
+    ),
+    SearchMovieModel(
+        title = "Attack on Titan",
+        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg"
+    ),
+    SearchMovieModel(
+        title = "Attack on Titan",
+        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg"
+    ),
+    SearchMovieModel(
+        title = "Attack on Titan",
+        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg"
+    ),
+    SearchMovieModel(
+        title = "Attack on Titan",
+        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg"
+    ),
+
+
+)
+
 val moreLikeThis: MutableList<MovieModel> = mutableListOf(
     MovieModel(
         title = "Avatar",

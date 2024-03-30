@@ -39,6 +39,7 @@ import com.example.netflix_final.screens.SettingsScreen
 import com.example.netflix_final.screens.WhoIsWatchingScreen
 
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
+import com.example.netflix_final.screens.SearchScreen
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -100,6 +101,18 @@ fun ComposeNavScreen() {
             val title = backStackEntry.arguments?.getString("title")
             val selectedMovie = movieList.first {it.title == title}
             PlayingScreen(navController = navController, movie = selectedMovie)
+        }
+//        composable(
+//            "detail/{movieName}",
+//            arguments = listOf(navArgument("movieName") { type = NavType.StringType })
+//        ) { backStackEntry ->
+//            val movieName = backStackEntry.arguments?.getString("movieName")
+//            val selectedMovie = movieList1.first {it.name == movieName}
+//            DetailScreen(navController, selectedMovie);
+//        }
+
+        composable("search"){
+            SearchScreen(navController = navController)
         }
     }
 }
