@@ -107,7 +107,7 @@ fun PlayingScreen(navController: NavController, movie: MovieModel) {
                     ).show()
                 }
             ) {
-                Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null, modifier = Modifier.size(100.dp))
+                Icon(imageVector = Icons.Rounded.PlayArrow, tint = Color.LightGray, contentDescription = null, modifier = Modifier.size(100.dp))
             }
         }
     }

@@ -7,276 +7,7 @@ data class GenreModel(val name: String)
 
 data class SearchMovieModel(val title: String, val image: String)
 
-data class MovieModel(val title: String, val description: String, val genre: List<GenreModel>? = null,  val year: Int? = null, val duration: Int? = null, val image: String, val cast: List<CastModel>? = null)
-
-fun formatDuration(minutes: Int): String {
-    val hours = minutes / 60
-    val remainingMinutes = minutes % 60
-
-    return if (hours > 0) {
-        "${hours}h ${remainingMinutes}min"
-    } else {
-        "${remainingMinutes}min"
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-var featureFilms: MutableList<MovieModel> = mutableListOf(
-    MovieModel(
-        title = "Dune: Part Two",
-        description = "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family. Facing a choice between love and the fate of the universe, he endeavors to prevent a terrible future only he can foresee.",
-        genre = listOf(GenreModel("Sci-Fi"), GenreModel("Adventure"), GenreModel("Drama")), // Drama can be added for this movie
-        year = 2024,
-        duration = 166,
-        image = "https://media.themoviedb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
-        cast = duneCastList
-    ),
-    MovieModel(
-        title = "Dune",
-        description = "Paul Atreides leads nomadic tribes in a battle to control the desert planet Arrakis.",
-        genre = listOf(GenreModel("Science Fiction"), GenreModel("Adventure"), GenreModel("Action")),
-        year = 2021,
-        duration = 155,
-        image = "https://media.themoviedb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
-        cast = duneCastList
-    ),
-
-    MovieModel(
-        title = "The Lord of the Rings: The Return of the King",
-        description = "Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.",
-        genre = listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Fantasy")),
-        year = 2003,
-        duration = 201,
-        image = "https://www.themoviedb.org/t/p/original/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg",
-        cast = duneCastList
-    ),
-
-    MovieModel(
-        title = "Avengers: Infinity War",
-        description = "The Avengers and their allies must be willing to sacrifice all in an attempt to defeat the powerful Thanos before his blitz of devastation and ruin puts an end to the universe.",
-        genre = listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Sci-Fi")),
-        year = 2018,
-        duration = 149,
-        image = "https://www.themoviedb.org/t/p/original/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
-        cast = marvelCastList
-    ),
-
-    MovieModel(
-        title = "Kung Fu Panda",
-        description = "When the Valley of Peace is threatened, lazy Po the panda discovers his destiny as the chosen one and trains to become a kung fu hero, but transforming the unsleek slacker into a brave warrior won't be easy.",
-        genre = listOf(GenreModel("Animation"), GenreModel("Action"), GenreModel("Comedy")),
-        year = 2008,
-        duration = 190,
-        image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg",
-        cast = marvelCastList
-    ),
-
-    MovieModel(
-        title = "Avatar",
-        description = "A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.",
-        genre = listOf(
-            GenreModel("Action"),
-            GenreModel("Adventure"),
-            GenreModel("Fantasy")
-        ),
-        year = 2009,
-        duration = 162, // in minutes
-        image = "https://image.tmdb.org/t/p/original/kqbnN2WodNDczBVO8O9PMGXtqYU.jpg",
-        cast = listOf(
-            CastModel("Sam Worthington", "Jake Sully"),
-            CastModel("Zoe Saldana", "Neytiri"),
-            CastModel("Sigourney Weaver", "Dr. Grace Augustine"),
-            CastModel("Stephen Lang", "Colonel Miles Quaritch"),
-            CastModel("Michelle Rodriguez", "Trudy Chacón")
-        )
-    )
-)
-
-@RequiresApi(Build.VERSION_CODES.O)
-var likeDune: MutableList<MovieModel> = mutableListOf(
-    MovieModel(
-        title = "Blade Runner",
-        description = "A blade runner must pursue and terminate four replicants who stole a ship in space, and have returned to Earth to find their creator.",
-        genre = listOf(
-            GenreModel("Sci-Fi"),
-            GenreModel("Thriller")
-        ),
-        year = 1982,
-        duration = 117, // in minutes
-        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
-        cast = listOf(
-            CastModel("Harrison Ford", "Rick Deckard"),
-            CastModel("Rutger Hauer", "Roy Batty"),
-            CastModel("Sean Young", "Rachael"),
-            CastModel("Edward James Olmos", "Gaff"),
-            CastModel("M. Emmet Walsh", "Captain Harry Bryant")
-        )
-    ),
-
-    MovieModel(
-        title = "Arrival",
-        description = "A linguist is recruited by the military to assist in translating alien communications and unravel the mystery of their visitation.",
-        genre = listOf(GenreModel("Drama"), GenreModel("Sci-Fi")),
-        year = 2016,
-        duration = (116),
-        image = "https://media.themoviedb.org/t/p/w500/pEzNVQfdzYDzVK0XqxERIw2x2se.jpg"
-    ),
-
-    MovieModel(
-        title = "Mad Max: Fury Road",
-        description = "In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search of her homeland with the help of a group of female prisoners, a psychotic worshiper, and a drifter named Max.",
-        genre = listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Sci-Fi")),
-        year = 2015,
-        duration = (120),
-        image = "https://image.tmdb.org/t/p/original/c6N4YcG5j9WKgIxY8nOhMLqluej.jpg"
-    ),
-
-    MovieModel(
-        "Interstellar",
-        "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-        listOf(GenreModel("Adventure"), GenreModel("Drama"), GenreModel("Sci-Fi")),
-        2014,
-        (169),
-        "https://www.themoviedb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
-        cast = interstellarCastList
-    ),
-
-    MovieModel(
-        title = "The Martian",
-        description = "An astronaut becomes stranded on Mars after his team assumes him dead, and must rely on his ingenuity to find a way to signal to Earth that he is alive.",
-        genre = listOf(GenreModel("Adventure"), GenreModel("Drama"), GenreModel("Sci-Fi")),
-        year = 2015,
-        duration = (144),
-        image = "https://image.tmdb.org/t/p/original/qAlJOHvN0lUuRCfvatUu6avUbR3.jpg"
-    ),
-
-    MovieModel(
-        title = "Prometheus",
-        description = "A team of scientists journey through the universe on the spaceship Prometheus on a voyage to investigate alien life forms.",
-        genre = listOf(GenreModel("Adventure"), GenreModel("Mystery"), GenreModel("Sci-Fi")),
-        year = 2012,
-        duration = (124),
-        image = "https://image.tmdb.org/t/p/original/ru0CecpagM10IaNeVLKvb2CyUor.jpg"
-    ),
-
-    MovieModel(
-        title = "Inception",
-        description = "A thief who enters the dreams of others to steal their secrets gets a chance to redeem himself by planting an idea in someone's mind.",
-        genre = listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Sci-Fi")),
-        year = 2010,
-        duration = (148),
-        image = "https://image.tmdb.org/t/p/original/9egFcRMV4Z3ZdcaJAYoxmnbqZE7.jpg"
-    ),
-
-    MovieModel(
-        title = "Elysium",
-        description = "In the year 2154, the very wealthy live on a man-made space station while the rest of the population resides on a ruined Earth.",
-        genre = listOf(GenreModel("Action"), GenreModel("Drama"), GenreModel("Sci-Fi")),
-        year = 2013,
-        duration = (109),
-        image = "https://image.tmdb.org/t/p/original/ib8CXYegPGQNBME03oG7i6k4IMZ.jpg"
-    ),
-
-    MovieModel(
-        title = "Avatar",
-        description = "A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.",
-        genre = listOf(
-            GenreModel("Action"),
-            GenreModel("Adventure"),
-            GenreModel("Fantasy")
-        ),
-        year = 2009,
-        duration = 162, // in minutes
-        image = "https://image.tmdb.org/t/p/original/kqbnN2WodNDczBVO8O9PMGXtqYU.jpg",
-        cast = listOf(
-            CastModel("Sam Worthington", "Jake Sully"),
-            CastModel("Zoe Saldana", "Neytiri"),
-            CastModel("Sigourney Weaver", "Dr. Grace Augustine"),
-            CastModel("Stephen Lang", "Colonel Miles Quaritch"),
-            CastModel("Michelle Rodriguez", "Trudy Chacón")
-        )
-    ),
-
-    MovieModel(
-        title = "Damsel",
-        description = "It's the Wild West, circa 1870. Samuel Alabaster, an affluent pioneer, ventures across the American frontier to marry the love of his life, Penelope.",
-        genre = listOf(
-            GenreModel("Comedy"),
-            GenreModel("Drama"),
-            GenreModel("Western")
-        ),
-        year = 2018,
-        duration = 113, // in minutes
-        image = "https://media.themoviedb.org/t/p/w500/sMp34cNKjIb18UBOCoAv4DpCxwY.jpg",
-        cast = listOf(
-            CastModel("Robert Pattinson", "Samuel Alabaster"),
-            CastModel("Mia Wasikowska", "Penelope"),
-            CastModel("David Zellner", "Zachariah Running Bear"),
-            CastModel("Nathan Zellner", "Parson Henry"),
-            CastModel("Joseph Billingiere", "Rufus Cornell")
-            // Add more cast members as needed
-        )
-    ),
-    MovieModel(
-        title = "The Queen's Gambit",
-        description = "In a 1950s orphanage, a young girl discovers an astonishing talent for chess and begins an unlikely journey to stardom while grappling with addiction.",
-        genre = listOf(
-            GenreModel("Drama"),
-            GenreModel("Sport")
-        ),
-        year = 2020,
-        duration = 390, // in minutes (total duration of all episodes)
-        image = "https://media.themoviedb.org/t/p/w500/zU0htwkhNvBQdVSIKB9s6hgVeFK.jpg",
-        cast = listOf(
-            CastModel("Anya Taylor-Joy", "Beth Harmon"),
-            CastModel("Bill Camp", "Mr. Shaibel"),
-            CastModel("Moses Ingram", "Jolene"),
-            CastModel("Marielle Heller", "Alma Wheatley"),
-            CastModel("Thomas Brodie-Sangster", "Benny Watts")
-            // Add more cast members as needed
-        )
-    ),
-    MovieModel(
-        title = "Barbie",
-        description = "A live-action movie adaptation based on the popular Barbie toy line. Follow Barbie on her exciting adventures in a magical world.",
-        genre = listOf(
-            GenreModel("Adventure"),
-            GenreModel("Fantasy"),
-            GenreModel("Family")
-        ),
-        year = 2023,
-        duration = 120, // in minutes
-        image = "https://media.themoviedb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
-        cast = listOf(
-            CastModel("Margot Robbie", "Barbie"),
-            CastModel("Idris Elba", "Ken"),
-            CastModel("Emma Stone", "Teresa"),
-            CastModel("Ryan Reynolds", "Skipper"),
-            CastModel("Octavia Spencer", "Nikki")
-            // Add more cast members as needed
-        )
-    ),
-    MovieModel(
-        title = "The Falcon and the Winter Soldier",
-        description = "Sam Wilson, also known as The Falcon, and Bucky Barnes, also known as The Winter Soldier, team up on a global adventure that tests their abilities and their patience.",
-        genre = listOf(
-            GenreModel("Action"),
-            GenreModel("Adventure"),
-            GenreModel("Drama")
-        ),
-        year = 2021,
-        duration = 360, // in minutes (total duration of all episodes)
-        image = "https://media.themoviedb.org/t/p/w220_and_h330_face/zA8ld5GRfLAjw1ow8Fm4IDyWYvi.jpg",
-        cast = listOf(
-            CastModel("Anthony Mackie", "Sam Wilson / Falcon"),
-            CastModel("Sebastian Stan", "Bucky Barnes / Winter Soldier"),
-            CastModel("Wyatt Russell", "John Walker / U.S. Agent"),
-            CastModel("Emily VanCamp", "Sharon Carter / Agent 13"),
-            CastModel("Daniel Brühl", "Helmut Zemo")
-            // Add more cast members as needed
-        )
-    )
-)
+data class MovieModel(val title: String, val description: String? = null, val genre: List<GenreModel>? = null,  val year: Int? = null, val duration: Int? = null, val image: String? = null, val cast: List<CastModel>? = null)
 
 @RequiresApi(Build.VERSION_CODES.O)
 val movieList: MutableList<MovieModel> = mutableListOf(
@@ -291,13 +22,7 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         year = 2009,
         duration = 162, // in minutes
         image = "https://image.tmdb.org/t/p/original/kqbnN2WodNDczBVO8O9PMGXtqYU.jpg",
-        cast = listOf(
-            CastModel("Sam Worthington", "Jake Sully"),
-            CastModel("Zoe Saldana", "Neytiri"),
-            CastModel("Sigourney Weaver", "Dr. Grace Augustine"),
-            CastModel("Stephen Lang", "Colonel Miles Quaritch"),
-            CastModel("Michelle Rodriguez", "Trudy Chacón")
-        )
+        cast = avatarCastList
     ),
 
     MovieModel(
@@ -311,14 +36,7 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         year = 2018,
         duration = 113, // in minutes
         image = "https://media.themoviedb.org/t/p/w500/sMp34cNKjIb18UBOCoAv4DpCxwY.jpg",
-        cast = listOf(
-            CastModel("Robert Pattinson", "Samuel Alabaster"),
-            CastModel("Mia Wasikowska", "Penelope"),
-            CastModel("David Zellner", "Zachariah Running Bear"),
-            CastModel("Nathan Zellner", "Parson Henry"),
-            CastModel("Joseph Billingiere", "Rufus Cornell")
-            // Add more cast members as needed
-        )
+        cast = damselCastList
     ),
     MovieModel(
         title = "The Queen's Gambit",
@@ -350,14 +68,7 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         year = 2023,
         duration = 120, // in minutes
         image = "https://media.themoviedb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
-        cast = listOf(
-            CastModel("Margot Robbie", "Barbie"),
-            CastModel("Idris Elba", "Ken"),
-            CastModel("Emma Stone", "Teresa"),
-            CastModel("Ryan Reynolds", "Skipper"),
-            CastModel("Octavia Spencer", "Nikki")
-            // Add more cast members as needed
-        )
+        cast = barbieCastList
     ),
     MovieModel(
         title = "The Falcon and the Winter Soldier",
@@ -370,14 +81,7 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         year = 2021,
         duration = 360, // in minutes (total duration of all episodes)
         image = "https://media.themoviedb.org/t/p/w220_and_h330_face/zA8ld5GRfLAjw1ow8Fm4IDyWYvi.jpg",
-        cast = listOf(
-            CastModel("Anthony Mackie", "Sam Wilson / Falcon"),
-            CastModel("Sebastian Stan", "Bucky Barnes / Winter Soldier"),
-            CastModel("Wyatt Russell", "John Walker / U.S. Agent"),
-            CastModel("Emily VanCamp", "Sharon Carter / Agent 13"),
-            CastModel("Daniel Brühl", "Helmut Zemo")
-            // Add more cast members as needed
-        )
+        cast = falconAndWinterSoldierCastList
     ),
     MovieModel(
         title = "Blade Runner",
@@ -389,13 +93,7 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         year = 1982,
         duration = 117, // in minutes
         image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
-        cast = listOf(
-            CastModel("Harrison Ford", "Rick Deckard"),
-            CastModel("Rutger Hauer", "Roy Batty"),
-            CastModel("Sean Young", "Rachael"),
-            CastModel("Edward James Olmos", "Gaff"),
-            CastModel("M. Emmet Walsh", "Captain Harry Bryant")
-        )
+        cast = bladeRunnerCastList
     ),
     MovieModel(
         title = "Dune",
@@ -413,7 +111,7 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         year = 2024,
         duration = (166),
         image = "https://media.themoviedb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
-        cast = duneCastList
+        cast = dunePartTwoCastList
     ),
     MovieModel(
         title = "No Time to Die",
@@ -421,7 +119,8 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         genre = listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Thriller")),
         year = 2021,
         duration = (163),
-        image = "https://image.tmdb.org/t/p/original/aGqbo87fnIKRe1i2QgpCQCMbhfk.jpg"
+        image = "https://image.tmdb.org/t/p/original/aGqbo87fnIKRe1i2QgpCQCMbhfk.jpg",
+        cast = noTimeToDieCastList
     ),
     MovieModel(
         title = "Joker",
@@ -429,7 +128,8 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         genre = listOf(GenreModel("Crime"), GenreModel("Drama"), GenreModel("Thriller")),
         year = 2019,
         duration = (122),
-        image = "https://www.themoviedb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg"
+        image = "https://www.themoviedb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
+        cast = jokerCastList
     ),
     MovieModel(
         title = "Parasite",
@@ -437,7 +137,8 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         genre = listOf(GenreModel("Drama"), GenreModel("Thriller"), GenreModel("Comedy")),
         year = 2019,
         duration = (132),
-        image = "https://www.themoviedb.org/t/p/original/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg"
+        image = "https://www.themoviedb.org/t/p/original/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+        cast = parasiteCastList
     ),
     MovieModel(
         title = "The Shawshank Redemption",
@@ -453,7 +154,17 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Animation")), // List of genres for Spider-Man
         2018,
         (117),
-        "https://www.themoviedb.org/t/p/original/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg"
+        "https://www.themoviedb.org/t/p/original/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg",
+        spiderVerseCastList
+    ),
+    MovieModel(
+        "Spider-Man: Across the Spider-Verse",
+        "Miles Morales reunites with Gwen Stacy and travels across the multiverse to face a new threat alongside a team of Spider-People.",
+        listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Animation"), GenreModel("Sci-Fi")), // Added Sci-Fi genre
+        2023,
+        (140), // Adjust runtime if known
+        "https://media.themoviedb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg", // Update with actual poster URL
+        spiderVerseCastList
     ),
     MovieModel(
         "The Dark Knight",
@@ -559,15 +270,25 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         year = 2018,
         duration = (149),
         image = "https://www.themoviedb.org/t/p/original/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
-        cast = marvelCastList
+        cast = avengersEndgameCastList
     ),
     MovieModel(
-        title = "Kung Fu Panda",
-        description = "When the Valley of Peace is threatened, lazy Po the panda discovers his destiny as the chosen one and trains to become a kung fu hero, but transforming the unsleek slacker into a brave warrior won't be easy.",
-        genre = listOf(GenreModel("Animation"), GenreModel("Action"), GenreModel("Comedy")),
-        year = 2008,
-        duration = (90),
-        image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg"
+        title = "Avengers: Endgame",
+        description = "After Thanos decimates half of all life in the universe, the remaining Avengers assemble for a final stand to restore balance and protect humanity.",
+        genre = listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Sci-Fi")),
+        year = 2019,
+        duration = (181),
+        image = "https://media.themoviedb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg",
+        cast = avengersEndgameCastList
+    ),
+    MovieModel(
+        title = "The Avengers",
+        description = "Earth's mightiest heroes come together to fight Loki and his alien army that threaten to take over the planet.",
+        genre = listOf(GenreModel("Action"), GenreModel("Adventure"), GenreModel("Sci-Fi")),
+        year = 2012,
+        duration = (141),
+        image = "https://media.themoviedb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg",
+        cast = avengersCastList
     ),
     MovieModel(
         title = "Kung Fu Panda",
@@ -617,159 +338,86 @@ val movieList: MutableList<MovieModel> = mutableListOf(
         duration = (109),
         image = "https://image.tmdb.org/t/p/original/ib8CXYegPGQNBME03oG7i6k4IMZ.jpg"
     ),
-)
-
-@RequiresApi(Build.VERSION_CODES.O)
-var Anime: MutableList<SearchMovieModel> = mutableListOf(
-    SearchMovieModel(
-        title = "Attack on Titan",
-        image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg"
-    ),
-    SearchMovieModel(
-        title = "Attack on Titan",
-        image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg"
-    ),
-    SearchMovieModel(
-        title = "Attack on Titan",
-        image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg"
-    ),
-    SearchMovieModel(
-        title = "Attack on Titan",
-        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg"
-    ),
-    SearchMovieModel(
-        title = "Attack on Titan",
-        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg"
-    ),
-    SearchMovieModel(
-        title = "Attack on Titan",
-        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg"
-    ),
-    SearchMovieModel(
-        title = "Attack on Titan",
-        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg"
-    ),
-
-
-)
-
-val moreLikeThis: MutableList<MovieModel> = mutableListOf(
     MovieModel(
-        title = "Avatar",
-        description = "A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.",
-        genre = listOf(
-            GenreModel("Action"),
-            GenreModel("Adventure"),
-            GenreModel("Fantasy")
-        ),
-        year = 2009,
-        duration = 162, // in minutes
-        image = "https://image.tmdb.org/t/p/original/kqbnN2WodNDczBVO8O9PMGXtqYU.jpg",
-        cast = listOf(
-            CastModel("Sam Worthington", "Jake Sully"),
-            CastModel("Zoe Saldana", "Neytiri"),
-            CastModel("Sigourney Weaver", "Dr. Grace Augustine"),
-            CastModel("Stephen Lang", "Colonel Miles Quaritch"),
-            CastModel("Michelle Rodriguez", "Trudy Chacón")
-        )
+        title = "Spirited Away",
+        description = "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.",
+        genre = listOf(GenreModel("Animation"), GenreModel("Adventure"), GenreModel("Family")),
+        year = 2001,
+        duration = 125,
+        image = "https://image.tmdb.org/t/p/original/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg"
     ),
     MovieModel(
-        title = "Blade Runner",
-        description = "A blade runner must pursue and terminate four replicants who stole a ship in space, and have returned to Earth to find their creator.",
-        genre = listOf(
-            GenreModel("Sci-Fi"),
-            GenreModel("Thriller")
-        ),
-        year = 1982,
-        duration = 117, // in minutes
-        image = "https://www.themoviedb.org/t/p/original/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
-        cast = listOf(
-            CastModel("Harrison Ford", "Rick Deckard"),
-            CastModel("Rutger Hauer", "Roy Batty"),
-            CastModel("Sean Young", "Rachael"),
-            CastModel("Edward James Olmos", "Gaff"),
-            CastModel("M. Emmet Walsh", "Captain Harry Bryant")
-        )
+        title = "My Neighbor Totoro",
+        description = "When two girls move to the country to be near their ailing mother, they have adventures with the wondrous forest spirits who live nearby.",
+        genre = listOf(GenreModel("Animation"), GenreModel("Family"), GenreModel("Fantasy")),
+        year = 1988,
+        duration = 86,
+        image = "https://image.tmdb.org/t/p/original/eUMPY651rEudX6bIUOeQ1jqoe1R.jpg"
     ),
     MovieModel(
-        title = "Damsel",
-        description = "It's the Wild West, circa 1870. Samuel Alabaster, an affluent pioneer, ventures across the American frontier to marry the love of his life, Penelope.",
-        genre = listOf(
-            GenreModel("Comedy"),
-            GenreModel("Drama"),
-            GenreModel("Western")
-        ),
+        title = "Your Name",
+        description = "Two strangers find themselves linked in a bizarre way. When a connection forms, will distance be the only thing to keep them apart?",
+        genre = listOf(GenreModel("Animation"), GenreModel("Drama"), GenreModel("Fantasy")),
+        year = 2016,
+        duration = 106,
+        image = "https://image.tmdb.org/t/p/original/vfJFJPepRKapMd5G2ro7klIRysq.jpg"
+    ),
+    MovieModel(
+        title = "Akira",
+        description = "A secret military project endangers Neo-Tokyo when it turns a biker gang member into a rampaging psychic psychopath who can only be stopped by two teenagers and a group of psychics.",
+        genre = listOf(GenreModel("Animation"), GenreModel("Action"), GenreModel("Sci-Fi")),
+        year = 1988,
+        duration = 124,
+        image = "https://image.tmdb.org/t/p/original/8wp4ljsGs6pClESLgoX1p4mSJQp.jpg"
+    ),
+    MovieModel(
+        title = "Princess Mononoke",
+        description = "On a journey to find the cure for a Tatarigami's curse, Ashitaka finds himself in the middle of a war between the forest gods and Tatara, a mining colony.",
+        genre = listOf(GenreModel("Animation"), GenreModel("Adventure"), GenreModel("Fantasy")),
+        year = 1997,
+        duration = 134,
+        image = "https://image.tmdb.org/t/p/original/11ZqHoboKSPPWgaPLupxEnddvUB.jpg"
+    ),
+    MovieModel(
+        title = "Ghost in the Shell",
+        description = "A cyborg policewoman and her partner hunt a mysterious and powerful hacker called the Puppet Master.",
+        genre = listOf(GenreModel("Animation"), GenreModel("Action"), GenreModel("Sci-Fi")),
+        year = 1995,
+        duration = 83,
+        image = "https://media.themoviedb.org/t/p/w500/9gC88zYUBARRSThcG93MvW14sqx.jpg"
+    ),
+    MovieModel(
+        title = "Grave of the Fireflies",
+        description = "A young boy and his little sister struggle to survive in Japan during World War II.",
+        genre = listOf(GenreModel("Animation"), GenreModel("Drama"), GenreModel("War")),
+        year = 1988,
+        duration = 89,
+        image = "https://image.tmdb.org/t/p/original/j7C9HpfZiIHFupkI55nuSK8qP8x.jpg"
+    ),
+    MovieModel(
+        title = "Neon Genesis Evangelion: The End of Evangelion",
+        description = "Concurrent theatrical ending of the TV series Neon Genesis Evangelion.",
+        genre = listOf(GenreModel("Animation"), GenreModel("Action"), GenreModel("Drama")),
+        year = 1997,
+        duration = 87,
+        image = "https://image.tmdb.org/t/p/original/lvChskSFX1SrsemcBowTuu0m7Rc.jpg"
+    ),
+    MovieModel(
+        title = "Dragon Ball Super: Broly",
+        description = "Goku and Vegeta encounter Broly, a Saiyan warrior unlike any fighter they've faced before.",
+        genre = listOf(GenreModel("Animation"), GenreModel("Action"), GenreModel("Fantasy")),
         year = 2018,
-        duration = 113, // in minutes
-        image = "https://media.themoviedb.org/t/p/w500/sMp34cNKjIb18UBOCoAv4DpCxwY.jpg",
-        cast = listOf(
-            CastModel("Robert Pattinson", "Samuel Alabaster"),
-            CastModel("Mia Wasikowska", "Penelope"),
-            CastModel("David Zellner", "Zachariah Running Bear"),
-            CastModel("Nathan Zellner", "Parson Henry"),
-            CastModel("Joseph Billingiere", "Rufus Cornell")
-            // Add more cast members as needed
-        )
+        duration = 100,
+        image = "https://media.themoviedb.org/t/p/w500/f03YksE4NggUjG75toz4H1YAGRf.jpg"
     ),
     MovieModel(
-        title = "The Queen's Gambit",
-        description = "In a 1950s orphanage, a young girl discovers an astonishing talent for chess and begins an unlikely journey to stardom while grappling with addiction.",
-        genre = listOf(
-            GenreModel("Drama"),
-            GenreModel("Sport")
-        ),
-        year = 2020,
-        duration = 390, // in minutes (total duration of all episodes)
-        image = "https://media.themoviedb.org/t/p/w500/zU0htwkhNvBQdVSIKB9s6hgVeFK.jpg",
-        cast = listOf(
-            CastModel("Anya Taylor-Joy", "Beth Harmon"),
-            CastModel("Bill Camp", "Mr. Shaibel"),
-            CastModel("Moses Ingram", "Jolene"),
-            CastModel("Marielle Heller", "Alma Wheatley"),
-            CastModel("Thomas Brodie-Sangster", "Benny Watts")
-            // Add more cast members as needed
-        )
+        title = "Attack on Titan: Crimson Bow and Arrow",
+        description = "In a world where giant humanoid Titans prey on humans, Eren Yeager joins the scouting legion to get revenge on the monsters who killed everyone in his town.",
+        genre = listOf(GenreModel("Animation"), GenreModel("Action"), GenreModel("Fantasy")),
+        year = 2014,
+        duration = 59,
+        image = "https://m.media-amazon.com/images/M/MV5BZWJlODhhYTEtZjg3YS00NjNmLTgwNTMtMjBmYTZhYjQzMDJkXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_FMjpg_UX1000_.jpg"
     ),
-    MovieModel(
-        title = "Barbie",
-        description = "A live-action movie adaptation based on the popular Barbie toy line. Follow Barbie on her exciting adventures in a magical world.",
-        genre = listOf(
-            GenreModel("Adventure"),
-            GenreModel("Fantasy"),
-            GenreModel("Family")
-        ),
-        year = 2023,
-        duration = 120, // in minutes
-        image = "https://media.themoviedb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
-        cast = listOf(
-            CastModel("Margot Robbie", "Barbie"),
-            CastModel("Idris Elba", "Ken"),
-            CastModel("Emma Stone", "Teresa"),
-            CastModel("Ryan Reynolds", "Skipper"),
-            CastModel("Octavia Spencer", "Nikki")
-            // Add more cast members as needed
-        )
-    ),
-    MovieModel(
-        title = "The Falcon and the Winter Soldier",
-        description = "Sam Wilson, also known as The Falcon, and Bucky Barnes, also known as The Winter Soldier, team up on a global adventure that tests their abilities and their patience.",
-        genre = listOf(
-            GenreModel("Action"),
-            GenreModel("Adventure"),
-            GenreModel("Drama")
-        ),
-        year = 2021,
-        duration = 360, // in minutes (total duration of all episodes)
-        image = "https://media.themoviedb.org/t/p/w220_and_h330_face/zA8ld5GRfLAjw1ow8Fm4IDyWYvi.jpg",
-        cast = listOf(
-            CastModel("Anthony Mackie", "Sam Wilson / Falcon"),
-            CastModel("Sebastian Stan", "Bucky Barnes / Winter Soldier"),
-            CastModel("Wyatt Russell", "John Walker / U.S. Agent"),
-            CastModel("Emily VanCamp", "Sharon Carter / Agent 13"),
-            CastModel("Daniel Brühl", "Helmut Zemo")
-            // Add more cast members as needed
-        )
-    )
 )
 
 @RequiresApi(Build.VERSION_CODES.O)

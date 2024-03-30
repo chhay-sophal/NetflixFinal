@@ -23,9 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Share
@@ -55,7 +53,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.media3.exoplayer.offline.Download
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
@@ -63,10 +60,9 @@ import com.example.netflix_final.R
 import com.example.netflix_final.components.ComposableBottomAppBar
 import com.example.netflix_final.models.CastModel
 import com.example.netflix_final.models.MovieModel
-import com.example.netflix_final.models.featureFilms
-import com.example.netflix_final.models.formatDuration
 import com.example.netflix_final.models.moreLikeThis
 import com.example.netflix_final.models.myList
+import com.example.netflix_final.utils.formatDuration
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -119,7 +115,12 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(imageVector = Icons.Rounded.Share, contentDescription = null)
                     }
-                }
+                },
+                modifier = Modifier.background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color.Black, Color.Transparent)
+                    )
+                )
             )
         },
         bottomBar = {
@@ -227,7 +228,9 @@ fun TitleAndInfo(movie: MovieModel) {
         }
     }
     //                Title
-    Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 40.dp), contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 40.dp), contentAlignment = Alignment.Center) {
         Text(text = movie.title, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
     }
 
@@ -311,7 +314,7 @@ fun DescriptionsSection(movie: MovieModel) {
     Box(
         modifier = Modifier.padding(vertical = 20.dp)
     ) {
-        Text(text = movie.description, style = TextStyle(lineHeight = 23.sp))
+        movie.description?.let { Text(text = it, style = TextStyle(lineHeight = 23.sp)) }
     }
 }
 
@@ -481,7 +484,11 @@ fun MoreLikeThisSection(navController: NavController) {
             LazyRow {
                 items(moreLikeThis.size) {
                     Surface(
-                        modifier = Modifier.width(110.dp).height(170.dp).padding(vertical = 10.dp).padding(horizontal = 5.dp),
+                        modifier = Modifier
+                            .width(110.dp)
+                            .height(170.dp)
+                            .padding(vertical = 10.dp)
+                            .padding(horizontal = 5.dp),
                         shape = RoundedCornerShape(1.dp),
                         onClick = {
                             navController.navigate("movie-details/${moreLikeThis[it].title}")

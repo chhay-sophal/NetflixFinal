@@ -64,7 +64,7 @@ var myList: MutableList<MovieModel> = mutableStateListOf(
         year = 2018,
         duration = 149,
         image = "https://www.themoviedb.org/t/p/original/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
-        cast = marvelCastList
+        cast = avengersEndgameCastList
     ),
 
     MovieModel(
@@ -74,7 +74,7 @@ var myList: MutableList<MovieModel> = mutableStateListOf(
         year = 2008,
         duration = 190,
         image = "https://image.tmdb.org/t/p/original/tPNVanfI18Pbjn4jqElWqLPBJ4z.jpg",
-        cast = marvelCastList
+        cast = avengersEndgameCastList
     ),
     MovieModel(
         "Interstellar",

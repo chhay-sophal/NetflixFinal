@@ -27,7 +27,7 @@ import com.example.netflix_final.Starter.FourthApp
 import com.example.netflix_final.Starter.Login
 import com.example.netflix_final.Starter.SecondApp
 import com.example.netflix_final.Starter.ThirdApp
-import com.example.netflix_final.models.featureFilms
+import com.example.netflix_final.models.featureMovies
 
 import com.example.netflix_final.screens.FirstTimeScreen
 import com.example.netflix_final.screens.HomeScreen
@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ComposeNavScreen() {
     val navController = rememberNavController()
-    val featureFilmsPagerState = rememberPagerState( pageCount = { featureFilms.size } )
+    val featureFilmsPagerState = rememberPagerState( pageCount = { featureMovies.size } )
     val homePageScrollState = rememberScrollState()
 
     NavHost(navController = navController, startDestination = "first-screen") {

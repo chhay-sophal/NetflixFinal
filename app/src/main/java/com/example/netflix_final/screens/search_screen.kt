@@ -24,8 +24,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -50,9 +48,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.components.ComposableBottomAppBar
-import com.example.netflix_final.models.Anime
+import com.example.netflix_final.models.anime
 import com.example.netflix_final.models.MovieModel
-import com.example.netflix_final.models.SearchMovieModel
 import com.example.netflix_final.models.continueWatching
 import com.example.netflix_final.models.likeDune
 import kotlinx.coroutines.launch
@@ -131,8 +128,8 @@ fun MovieContent(navController: NavController) {
                 ) {
                     Text(text = "Anime", fontSize = 17.sp, fontWeight = FontWeight.Medium, color = Color.White, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                     LazyRow {
-                        items(Anime.size) {
-                            MovieCardImage(searchMovieModel = Anime[it], navController = navController)
+                        items(anime.size) {
+                            MovieCardImage(movie = anime[it], navController = navController)
                         }
                     }
                 }
@@ -167,7 +164,7 @@ fun SearchScreen(navController : NavController){
 }
 
 @Composable
-fun MovieCardImage(movie: MovieModel? = null, searchMovieModel: SearchMovieModel? = null, navController: NavController) {
+fun MovieCardImage(movie: MovieModel? = null, searchMovieModel: MovieModel? = null, navController: NavController) {
     Surface(modifier = Modifier
         .width(110.dp)
         .height(160.dp)
