@@ -139,7 +139,7 @@ fun ComposeLazyVerticalGridFix(navController: NavController) {
                 items(1) {
                     Button(
                         onClick = {
-                            loggedInUser = userList[1]
+                            loggedInUser = userList[userList.lastIndex]
                             navController.navigate("home")
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
