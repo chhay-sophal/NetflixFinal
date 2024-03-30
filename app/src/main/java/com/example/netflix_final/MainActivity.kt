@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -28,12 +29,13 @@ import com.example.netflix_final.Starter.Login
 import com.example.netflix_final.Starter.SecondApp
 import com.example.netflix_final.Starter.ThirdApp
 import com.example.netflix_final.models.featureFilms
-
 import com.example.netflix_final.screens.FirstTimeScreen
+
 import com.example.netflix_final.screens.HomeScreen
 import com.example.netflix_final.screens.SignInScreen
 import com.example.netflix_final.screens.MovieDetailsScreen
 import com.example.netflix_final.screens.MyListScreen
+//import com.example.netflix_final.screens.Profile
 import com.example.netflix_final.screens.WhoIsWatchingScreen
 
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
@@ -67,6 +69,7 @@ fun ComposeNavScreen() {
     NavHost(navController = navController, startDestination = "first-screen") {
         composable("first-screen") {
             FirstTimeScreen(navController = navController)
+//           Profile()
         }
         composable("sign-in") {
             SignInScreen(navController = navController)
@@ -127,4 +130,6 @@ fun NavScreen(){
             Login()
         }
     }
+
 }
+
