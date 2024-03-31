@@ -2,19 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="PreviewActorScreen">
+      <entry key="PreviewProfile">
         <State />
       </entry>
-      <entry key="PreviewDownloadScreen">
-        <State />
-      </entry>
-      <entry key="PreviewTVShowScreen">
-        <State />
-      </entry>
-      <entry key="RemoveActor">
-        <State />
-      </entry>
-      <entry key="Run">
+      <entry key="PreviewProfileScreen">
         <State />
       </entry>
       <entry key="app">

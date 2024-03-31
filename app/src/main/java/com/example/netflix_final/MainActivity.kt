@@ -31,12 +31,14 @@ import com.example.netflix_final.models.featureMovies
 import com.example.netflix_final.screens.ActorScreen
 import com.example.netflix_final.screens.CategoryScreen
 import com.example.netflix_final.screens.DownloadScreen
-
 import com.example.netflix_final.screens.FirstTimeScreen
+
 import com.example.netflix_final.screens.HomeScreen
 import com.example.netflix_final.screens.SignInScreen
 import com.example.netflix_final.screens.MovieDetailsScreen
 import com.example.netflix_final.screens.MyListScreen
+import com.example.netflix_final.screens.NotificationsScreen
+import com.example.netflix_final.screens.ProfileScreen
 import com.example.netflix_final.screens.PlayingScreen
 import com.example.netflix_final.screens.SettingsScreen
 import com.example.netflix_final.screens.WhoIsWatchingScreen
@@ -78,6 +80,18 @@ fun ComposeNavScreen() {
         composable("sign-in") {
             SignInScreen(navController = navController)
         }
+        composable("profile") {
+            ProfileScreen(navController = navController)
+        }
+        composable("profile/my-list") {
+            MyListScreen(navController = navController)
+        }
+        composable("profile/downloads") {
+            DownloadScreen(navController = navController)
+        }
+        composable("profile/notifications") {
+            NotificationsScreen(navController = navController)
+        }
         composable("who-is-watching") {
             WhoIsWatchingScreen(navController = navController)
         }
@@ -107,12 +121,6 @@ fun ComposeNavScreen() {
             val title = backStackEntry.arguments?.getString("title")
             val selectedMovie = movieList.first {it.title == title}
             MovieDetailsScreen(navController = navController, movie = selectedMovie);
-        }
-        composable("my-list") {
-            MyListScreen(navController = navController)
-        }
-        composable("download") {
-            DownloadScreen(navController = navController)
         }
         composable("settings") {
             SettingsScreen(navController = navController)
@@ -183,4 +191,6 @@ fun NavScreen(){
             Login()
         }
     }
+
 }
+

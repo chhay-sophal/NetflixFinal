@@ -69,8 +69,8 @@ import com.example.netflix_final.models.myList
 @Composable
 fun HomeScreen(navController: NavController, pagerState: PagerState, scrollState: ScrollState) {
     Scaffold(
-        bottomBar = { ComposableBottomAppBar(navController) }
-    ){ paddingValues ->
+            bottomBar = { ComposableBottomAppBar(navController) }
+            ){ paddingValues ->
         Box(
             modifier = Modifier
                 .padding(paddingValues)

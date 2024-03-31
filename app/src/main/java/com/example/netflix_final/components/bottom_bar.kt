@@ -30,6 +30,8 @@ import com.example.netflix_final.R
 @Composable
 fun ComposableBottomAppBar(navController: NavController) {
     val currentRoute = navController.currentDestination?.route
+    val previousRoute = navController.previousBackStackEntry?.destination?.route
+
     BottomAppBar(
         containerColor = Color.Black, contentColor = Color.White,
         actions = {
@@ -39,43 +41,45 @@ fun ComposableBottomAppBar(navController: NavController) {
                     IconButton(onClick = {
                         navController.navigate("home")
                     }) {
-                        val iconColor = if (currentRoute?.startsWith("home") == true) Color.Red else Color.White
+                        val iconColor = if (currentRoute?.startsWith("home") == true || (previousRoute?.startsWith("home")  == true && currentRoute == "movie-details/{title}")) Color.Red else Color.White
                         Icon(Icons.Rounded.Home, contentDescription = "Home", tint = iconColor)
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = {
                         navController.navigate("search")
                     }) {
-                        val iconColor = if (currentRoute == "search") Color.Red else Color.White
+                        val iconColor = if (currentRoute?.startsWith("search") == true || (previousRoute?.startsWith("search")  == true && currentRoute == "movie-details/{title}")) Color.Red else Color.White
                         Icon(Icons.Rounded.Search, contentDescription = "Search", tint = iconColor)
                     }
+//                    Spacer(modifier = Modifier.weight(1f))
+//                    IconButton(onClick = {
+//                        navController.navigate("my-list")
+//                    }) {
+//                        val iconColor = if (currentRoute == "my-list") Color.Red else Color.White
+//                        Icon(Icons.Rounded.List, contentDescription = "List", tint = iconColor)
+//                    }
+//                    Spacer(modifier = Modifier.weight(1f))
+//                    IconButton(onClick = {
+//                        navController.navigate("download")
+//                    }) {
+//                        if (currentRoute == "download") {
+//                            AsyncImage(model = R.drawable.download_icon_red, contentDescription = null, modifier = Modifier.size(17.dp))
+//                        } else {
+//                            AsyncImage(model = R.drawable.download_icon_white, contentDescription = null, modifier = Modifier.size(17.dp))
+//                        }
+//                    }
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = {
-                        navController.navigate("my-list")
+                        navController.navigate("profile")
                     }) {
-                        val iconColor = if (currentRoute == "my-list") Color.Red else Color.White
-                        Icon(Icons.Rounded.List, contentDescription = "List", tint = iconColor)
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = {
-                        navController.navigate("download")
-                    }) {
-                        if (currentRoute == "download") {
-                            AsyncImage(model = R.drawable.download_icon_red, contentDescription = null, modifier = Modifier.size(17.dp))
-                        } else {
-                            AsyncImage(model = R.drawable.download_icon_white, contentDescription = null, modifier = Modifier.size(17.dp))
-                        }
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        val iconColor = if (currentRoute == "profile") Color.Red else Color.White
+                        val iconColor = if (currentRoute?.startsWith("profile") == true || (previousRoute?.startsWith("profile")  == true && currentRoute == "movie-details/{title}")) Color.Red else Color.White
                         Icon(Icons.Rounded.Person, contentDescription = "Profile", tint = iconColor)
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = {
                         navController.navigate("settings")
                     }) {
-                        val iconColor = if (currentRoute == "settings") Color.Red else Color.White
+                        val iconColor = if (currentRoute?.startsWith("settings") == true || (previousRoute?.startsWith("settings")  == true && currentRoute == "movie-details/{title}")) Color.Red else Color.White
                         Icon(Icons.Rounded.Settings, contentDescription = "Settings", tint = iconColor)
                     }
                     Spacer(modifier = Modifier.weight(1f))

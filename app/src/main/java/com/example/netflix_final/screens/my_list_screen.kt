@@ -43,6 +43,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -61,12 +64,26 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.components.ComposableBottomAppBar
+import com.example.netflix_final.components.ComposableTopAppBar
 import com.example.netflix_final.models.myList
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MyListScreen(navController: NavController) {
+    val verticalScrollState = rememberScrollState()
+
+    val titleText by remember {
+        derivedStateOf {
+            if (verticalScrollState.value > 100) {
+                "My List"
+            } else {
+                ""
+            }
+        }
+    }
+
     Scaffold(
+        topBar = { ComposableTopAppBar(navController = navController, titleText = titleText) },
         bottomBar = { ComposableBottomAppBar(navController) }
     ){ paddingValues ->
         Surface(
@@ -99,7 +116,7 @@ fun PreviewMyListScreen() {
 fun MyListScreenContent(navController: NavController) {
     Column(
         modifier = Modifier
-            .padding(20.dp)
+            .padding(horizontal = 20.dp).padding(bottom = 20.dp)
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
     ) {

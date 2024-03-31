@@ -93,7 +93,9 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
                         Icon(Icons.Rounded.KeyboardArrowLeft, contentDescription = "Back", modifier = Modifier.size(40.dp))
                     }
                 },
-                title = { },
+                title = {
+                    Text(text = movie.title, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.LightGray)
+                },
                 colors = topAppBarColors(
                     containerColor = topAppBarContainerColor,
                     titleContentColor = Color.Transparent,
