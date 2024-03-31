@@ -23,7 +23,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
@@ -55,17 +54,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.media3.exoplayer.offline.Download
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.R
-import com.example.netflix_final.models.CastModel
+import com.example.netflix_final.components.ComposableBottomAppBar
+import com.example.netflix_final.models.ActorModel
 import com.example.netflix_final.models.MovieModel
-import com.example.netflix_final.models.featureFilms
-import com.example.netflix_final.models.formatDuration
+import com.example.netflix_final.models.download
 import com.example.netflix_final.models.moreLikeThis
 import com.example.netflix_final.models.myList
+import com.example.netflix_final.utils.formatDuration
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -118,8 +117,16 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(imageVector = Icons.Rounded.Share, contentDescription = null)
                     }
-                }
+                },
+                modifier = Modifier.background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color.Black, Color.Transparent)
+                    )
+                )
             )
+        },
+        bottomBar = {
+            ComposableBottomAppBar(navController)
         },
         contentColor = Color.White,
         containerColor = Color.Black
@@ -144,7 +151,7 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
 @Preview(showSystemUi = true)
 @Composable()
 fun PreviewMovieDetailsScreen() {
-    MovieDetailsScreen(navController = rememberNavController(), movie = moreLikeThis[1])
+    moreLikeThis[1]?.let { MovieDetailsScreen(navController = rememberNavController(), movie = it) }
 }
 
 @Composable
@@ -176,7 +183,7 @@ fun Content(verticalScrollState: ScrollState, horizontalScrollState: ScrollState
                     endY = 1600f,
                 )
             )
-            .padding(bottom = 20.dp)
+            .padding(bottom = 60.dp)
     ) {
         Column(
             modifier = Modifier
@@ -185,17 +192,15 @@ fun Content(verticalScrollState: ScrollState, horizontalScrollState: ScrollState
         ) {
             TitleAndInfo(movie = movie)
 
-            PlayAndDownloadButtons(movie = movie)
+            PlayAndDownloadButtons(movie = movie, navController = navController)
 
             DescriptionsSection(movie = movie)
 
-            TrailerSection(movie = movie)
+            TrailerSection(movie = movie, navController)
 
-            BonusContentSection(movie = movie, horizontalScrollState = horizontalScrollState)
+            BonusContentSection(movie = movie, horizontalScrollState = horizontalScrollState, navController)
 
-            if (movie.cast?.isNotEmpty() == true) {
-                CastSection(cast = movie.cast)
-            }
+            movie.cast?.let { CastSection(cast = it, navController) }
 
             MoreLikeThisSection(navController = navController)
         }
@@ -223,7 +228,9 @@ fun TitleAndInfo(movie: MovieModel) {
         }
     }
     //                Title
-    Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 40.dp), contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 40.dp), contentAlignment = Alignment.Center) {
         Text(text = movie.title, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
     }
 
@@ -248,7 +255,7 @@ fun TitleAndInfo(movie: MovieModel) {
 // Play and Download button
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable()
-fun PlayAndDownloadButtons(movie: MovieModel) {
+fun PlayAndDownloadButtons(movie: MovieModel, navController: NavController) {
 //Play Button
     val context = LocalContext.current
     Surface(
@@ -260,7 +267,9 @@ fun PlayAndDownloadButtons(movie: MovieModel) {
         shape = RoundedCornerShape(5.dp),
         color = Color.White,
         contentColor = Color.Black,
-        onClick = { }
+        onClick = {
+            navController.navigate("play/${movie.title}")
+        }
     ){
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -283,9 +292,18 @@ fun PlayAndDownloadButtons(movie: MovieModel) {
         color = Color.DarkGray,
         contentColor = Color.Gray,
         onClick = {
-            Toast.makeText( context,
-                "Downloading...",
-                Toast.LENGTH_SHORT ).show()
+            if (download.contains(movie)) {
+                download.remove(movie)
+                Toast.makeText( context,
+                    "Removed from download",
+                    Toast.LENGTH_SHORT ).show()
+            } else {
+                download.add(movie)
+                Toast.makeText( context,
+                    "Downloaded",
+                    Toast.LENGTH_SHORT ).show()
+            }
+
         }
     ){
         Row(
@@ -293,8 +311,13 @@ fun PlayAndDownloadButtons(movie: MovieModel) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            AsyncImage(model = R.drawable.download_icon_gray, contentDescription = null, modifier = Modifier.size(30.dp))
-            Text(text = "Download", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
+            if (download.contains(movie)) {
+                Icon(imageVector = Icons.Rounded.Delete, contentDescription = null)
+                Text(text = "Remove From Download", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
+            } else {
+                AsyncImage(model = R.drawable.download_icon_gray, contentDescription = null, modifier = Modifier.size(30.dp))
+                Text(text = "Download", fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 5.dp))
+            }
         }
     }
 }
@@ -305,13 +328,13 @@ fun DescriptionsSection(movie: MovieModel) {
     Box(
         modifier = Modifier.padding(vertical = 20.dp)
     ) {
-        Text(text = movie.description, style = TextStyle(lineHeight = 23.sp))
+        movie.description?.let { Text(text = it, style = TextStyle(lineHeight = 23.sp)) }
     }
 }
 
 // Trailer
 @Composable()
-fun TrailerSection(movie: MovieModel) {
+fun TrailerSection(movie: MovieModel, navController: NavController) {
     Column(modifier = Modifier.width(180.dp)) {
         Text(text = "Trailer", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
         Surface(
@@ -327,7 +350,9 @@ fun TrailerSection(movie: MovieModel) {
                     .background(Color.Transparent)
                     .size(100.dp),
                 colors = ButtonDefaults.buttonColors(Color.Transparent),
-                onClick = { /*TODO*/ }
+                onClick = {
+                    navController.navigate("play/${movie.title}")
+                }
             ) {
                 Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null, tint = Color.White, modifier = Modifier.fillMaxSize())
             }
@@ -338,7 +363,7 @@ fun TrailerSection(movie: MovieModel) {
 
 // Bonus Content
 @Composable()
-fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
+fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState, navController: NavController) {
     Column(
         modifier = Modifier.padding(top = 40.dp)
     ) {
@@ -366,7 +391,9 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
                                 .background(Color.Transparent)
                                 .size(100.dp),
                             colors = ButtonDefaults.buttonColors(Color.Transparent),
-                            onClick = { /*TODO*/ }
+                            onClick = {
+                                navController.navigate("play/${movie.title}")
+                            }
                         ) {
                             Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null, tint = Color.White, modifier = Modifier.fillMaxSize())
                         }
@@ -432,7 +459,7 @@ fun BonusContentSection(movie: MovieModel, horizontalScrollState: ScrollState) {
 
 // Cast Content
 @Composable()
-fun CastSection(cast: List<CastModel>) {
+fun CastSection(cast: List<ActorModel?>, navController: NavController) {
     Column(
         modifier = Modifier.padding(top = 40.dp)
     ) {
@@ -440,22 +467,29 @@ fun CastSection(cast: List<CastModel>) {
         Box(modifier = Modifier.padding(top = 10.dp)) {
             LazyRow {
                 items(cast.size) {
-                    Column(
-                        modifier = Modifier
-                            .padding(end = 20.dp)
-                            .width(100.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Surface(
-                            modifier = Modifier
-                                .height(100.dp)
-                                .width(100.dp),
-                            shape = CircleShape
-                        ) {
-                            AsyncImage(model = cast[it].imageUrl, contentDescription = null, contentScale = ContentScale.Crop)
+                    cast[it].let { it1 ->
+                        if (it1 != null) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(end = 20.dp)
+                                    .width(100.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Surface(
+                                    modifier = Modifier
+                                        .height(100.dp)
+                                        .width(100.dp),
+                                    shape = CircleShape,
+                                    onClick = {
+                                        navController.navigate("actor/${cast[it]?.name}")
+                                    }
+                                ) {
+                                    AsyncImage(model = cast[it]?.image, contentDescription = null, contentScale = ContentScale.Crop)
+                                }
+                                Text(text = it1.name, modifier = Modifier.padding(top = 5.dp), textAlign = TextAlign.Center)
+                            }
                         }
-                        Text(text = cast[it].actorName, modifier = Modifier.padding(top = 5.dp), textAlign = TextAlign.Center)
                     }
                 }
             }
@@ -475,13 +509,17 @@ fun MoreLikeThisSection(navController: NavController) {
             LazyRow {
                 items(moreLikeThis.size) {
                     Surface(
-                        modifier = Modifier.width(110.dp).padding(vertical = 10.dp).padding(horizontal = 5.dp),
+                        modifier = Modifier
+                            .width(110.dp)
+                            .height(170.dp)
+                            .padding(vertical = 10.dp)
+                            .padding(horizontal = 5.dp),
                         shape = RoundedCornerShape(1.dp),
                         onClick = {
-                            navController.navigate("movie-details/${moreLikeThis[it].title}")
+                            navController.navigate("movie-details/${moreLikeThis[it]?.title}")
                         }
                     ) {
-                        AsyncImage(model = moreLikeThis[it].image, contentDescription = null)
+                        AsyncImage(model = moreLikeThis[it]?.image, contentDescription = null, contentScale = ContentScale.Crop)
                     }
                 }
             }

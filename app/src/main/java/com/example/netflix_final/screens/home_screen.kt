@@ -1,6 +1,5 @@
 package com.example.netflix_final.screens
 
-import android.content.ClipData.Item
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -20,9 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -31,36 +28,16 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.AddCircle
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Face
-import androidx.compose.material.icons.rounded.FavoriteBorder
-import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.List
-import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.Share
-import androidx.compose.material.icons.rounded.ShoppingCart
-import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,9 +45,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -80,15 +55,14 @@ import coil.compose.AsyncImage
 import com.example.netflix_final.R
 import com.example.netflix_final.components.ComposableBottomAppBar
 import com.example.netflix_final.models.MovieModel
+import com.example.netflix_final.models.anime
 import com.example.netflix_final.models.continueWatching
-import com.example.netflix_final.models.featureFilms
-import com.example.netflix_final.models.formatDuration
+import com.example.netflix_final.models.featureMovies
+import com.example.netflix_final.models.ifYouLikeMarvel
 import com.example.netflix_final.models.likeDune
 import com.example.netflix_final.models.loggedInUser
-import com.example.netflix_final.models.movieList
+import com.example.netflix_final.models.moreLikeThis
 import com.example.netflix_final.models.myList
-import java.time.Duration
-import java.time.Year
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
@@ -164,13 +138,9 @@ fun HomeScreenContent(navController: NavController, pagerState: PagerState, scro
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    val context = LocalContext.current
-
                     Button(
                         onClick = {
-                            Toast.makeText( context,
-                                "TV Shows",
-                                Toast.LENGTH_SHORT ).show()
+                            navController.navigate("home/tv-shows")
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp)
@@ -179,9 +149,7 @@ fun HomeScreenContent(navController: NavController, pagerState: PagerState, scro
                     }
                     Button(
                         onClick = {
-                            Toast.makeText( context,
-                                "Movies",
-                                Toast.LENGTH_SHORT ).show()
+                            navController.navigate("home/movies")
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp)
@@ -190,9 +158,7 @@ fun HomeScreenContent(navController: NavController, pagerState: PagerState, scro
                     }
                     Button(
                         onClick = {
-                            Toast.makeText( context,
-                                "Categories",
-                                Toast.LENGTH_SHORT ).show()
+                            navController.navigate("home/categories")
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp)
@@ -240,7 +206,7 @@ fun HomeScreenContent(navController: NavController, pagerState: PagerState, scro
                         Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(navController = navController, movie = likeDune[it])
+                                likeDune[it]?.let { it1 -> MovieBox(navController = navController, movie = it1) }
                             }
                         }
                     }
@@ -253,10 +219,10 @@ fun HomeScreenContent(navController: NavController, pagerState: PagerState, scro
                             .padding(horizontal = 0.dp),
                         horizontalAlignment = Alignment.Start
                     ) {
-                        Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
+                        Text(text = "If You Like The Marvel Universe", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(navController = navController, movie = likeDune[it])
+                                ifYouLikeMarvel[it]?.let { it1 -> MovieBox(navController = navController, movie = it1) }
                             }
                         }
                     }
@@ -269,10 +235,90 @@ fun HomeScreenContent(navController: NavController, pagerState: PagerState, scro
                             .padding(horizontal = 0.dp),
                         horizontalAlignment = Alignment.Start
                     ) {
-                        Text(text = "More like Dune", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
+                        Text(text = "Trending Now", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
                         LazyRow {
                             items(likeDune.size) {
-                                MovieBox(navController = navController, movie = likeDune[it])
+                                likeDune[it]?.let { it1 -> MovieBox(navController = navController, movie = it1) }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .padding(horizontal = 0.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = "For Anime Fan", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
+                        LazyRow {
+                            items(anime.size) {
+                                anime[it]?.let { it1 -> MovieBox(navController = navController, movie = it1) }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .padding(horizontal = 0.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = "TV Shows", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
+                        LazyRow {
+                            items(featureMovies.size) {
+                                featureMovies[it]?.let { it1 -> MovieBox(navController = navController, movie = it1) }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .padding(horizontal = 0.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = "New on Netflix", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
+                        LazyRow {
+                            items(anime.size) {
+                                anime[it]?.let { it1 -> MovieBox(navController = navController, movie = it1) }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .padding(horizontal = 0.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = "Coming Soon", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
+                        LazyRow {
+                            items(moreLikeThis.size) {
+                                moreLikeThis[it]?.let { it1 -> MovieBox(navController = navController, movie = it1) }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .padding(horizontal = 0.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = "Romantic", fontSize = 17.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(bottom = 5.dp, start = 10.dp))
+                        LazyRow {
+                            items(anime.size) {
+                                anime[it]?.let { it1 -> MovieBox(navController = navController, movie = it1) }
                             }
                         }
                     }
@@ -288,7 +334,7 @@ fun HomeScreenContent(navController: NavController, pagerState: PagerState, scro
 @Composable
 fun HomeScreenPreview() {
     val navController = rememberNavController()
-    val pagerState = rememberPagerState(pageCount = { featureFilms.size })
+    val pagerState = rememberPagerState(pageCount = { featureMovies.size })
     val scrollState = rememberScrollState()
     HomeScreen(navController, pagerState, scrollState)
 }
@@ -297,7 +343,7 @@ fun HomeScreenPreview() {
 @OptIn(ExperimentalFoundationApi::class) @Composable
 fun ComposeSuggestFilms(navController: NavController, pagerState: PagerState) {
     HorizontalPager(state = pagerState) {
-        MovieCard(navController = navController, movie = featureFilms[it])
+        featureMovies[it]?.let { it1 -> MovieCard(navController = navController, movie = it1) }
     }
 }
 
@@ -399,11 +445,7 @@ fun MovieCard(navController: NavController, movie: MovieModel) {
                     }
                     Button(
                         onClick = {
-                            Toast.makeText(
-                                context,
-                                "Categories",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            navController.navigate("play/${movie.title}")
                         },
                         colors = ButtonDefaults.buttonColors(Color.White),
                         shape = RoundedCornerShape(0.dp),
@@ -414,11 +456,7 @@ fun MovieCard(navController: NavController, movie: MovieModel) {
                     }
                     Button(
                         onClick = {
-                            Toast.makeText(
-                                context,
-                                "Movies",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            navController.navigate("movie-details/${movie.title}")
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         shape = RoundedCornerShape(0.dp),

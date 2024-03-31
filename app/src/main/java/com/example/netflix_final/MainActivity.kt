@@ -28,17 +28,24 @@ import com.example.netflix_final.Starter.FourthApp
 import com.example.netflix_final.Starter.Login
 import com.example.netflix_final.Starter.SecondApp
 import com.example.netflix_final.Starter.ThirdApp
-import com.example.netflix_final.models.featureFilms
+import com.example.netflix_final.models.featureMovies
+import com.example.netflix_final.screens.ActorScreen
+import com.example.netflix_final.screens.CategoryScreen
+import com.example.netflix_final.screens.DownloadScreen
 import com.example.netflix_final.screens.FirstTimeScreen
 
 import com.example.netflix_final.screens.HomeScreen
 import com.example.netflix_final.screens.SignInScreen
 import com.example.netflix_final.screens.MovieDetailsScreen
 import com.example.netflix_final.screens.MyListScreen
-//import com.example.netflix_final.screens.Profile
+import com.example.netflix_final.screens.Profile
+import com.example.netflix_final.screens.PlayingScreen
+import com.example.netflix_final.screens.SettingsScreen
 import com.example.netflix_final.screens.WhoIsWatchingScreen
 
 import com.example.netflix_final.ui.theme.NetflixFinalTheme
+import com.example.netflix_final.screens.SearchScreen
+import com.example.netflix_final.screens.SelectionScreen
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -63,7 +70,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ComposeNavScreen() {
     val navController = rememberNavController()
-    val featureFilmsPagerState = rememberPagerState( pageCount = { featureFilms.size } )
+    val featureFilmsPagerState = rememberPagerState( pageCount = { featureMovies.size } )
     val homePageScrollState = rememberScrollState()
 
     NavHost(navController = navController, startDestination = "first-screen") {
@@ -80,6 +87,22 @@ fun ComposeNavScreen() {
         composable("home") {
             HomeScreen(navController, featureFilmsPagerState, homePageScrollState)
         }
+        composable("home/tv-shows") {
+            SelectionScreen(navController = navController, "TV Shows")
+        }
+        composable("home/movies") {
+            SelectionScreen(navController = navController, "Movies")
+        }
+        composable("home/categories") {
+            SelectionScreen(navController = navController, "Categories")
+        }
+        composable(
+            "home/categories/{category}",
+            arguments = listOf(navArgument("category") { type = NavType.StringType })
+        ) {backStackEntry ->
+            val category = backStackEntry.arguments?.getString("category")
+            CategoryScreen(navController = navController, category)
+        }
         composable(
             "movie-details/{title}",
             arguments = listOf(navArgument("title") { type = NavType.StringType })
@@ -90,6 +113,39 @@ fun ComposeNavScreen() {
         }
         composable("my-list") {
             MyListScreen(navController = navController)
+        }
+        composable("download") {
+            DownloadScreen(navController = navController)
+        }
+        composable("settings") {
+            SettingsScreen(navController = navController)
+        }
+        composable(
+            "play/{title}" ,
+            arguments = listOf(navArgument("title") { type = NavType.StringType })
+        ) {backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title")
+            val selectedMovie = movieList.first {it.title == title}
+            PlayingScreen(navController = navController, movie = selectedMovie)
+        }
+//        composable(
+//            "detail/{movieName}",
+//            arguments = listOf(navArgument("movieName") { type = NavType.StringType })
+//        ) { backStackEntry ->
+//            val movieName = backStackEntry.arguments?.getString("movieName")
+//            val selectedMovie = movieList1.first {it.name == movieName}
+//            DetailScreen(navController, selectedMovie);
+//        }
+
+        composable("search"){
+            SearchScreen(navController = navController)
+        }
+        composable(
+            "actor/{name}" ,
+            arguments = listOf(navArgument("name") { type = NavType.StringType })
+        ) {backStackEntry ->
+            val name = backStackEntry.arguments?.getString("name")
+            ActorScreen(navController = navController, actorName = name)
         }
     }
 }

@@ -61,11 +61,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.components.ComposableBottomAppBar
+import com.example.netflix_final.models.download
 import com.example.netflix_final.models.myList
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MyListScreen(navController: NavController) {
+fun DownloadScreen(navController: NavController) {
     Scaffold(
         bottomBar = { ComposableBottomAppBar(navController) }
     ){ paddingValues ->
@@ -77,7 +78,7 @@ fun MyListScreen(navController: NavController) {
             color = Color.Black,
             contentColor = Color.White,
         ){
-            MyListScreenContent(navController = navController)
+            DownloadScreenContent(navController = navController)
         }
     }
 }
@@ -85,27 +86,27 @@ fun MyListScreen(navController: NavController) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showSystemUi = true)
 @Composable
-fun PreviewMyListScreen() {
+fun PreviewDownloadScreen() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "my-list") {
-        composable("my-list") {
-            MyListScreen(navController = navController)
+    NavHost(navController = navController, startDestination = "download") {
+        composable("download") {
+            DownloadScreen(navController = navController)
         }
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MyListScreenContent(navController: NavController) {
+fun DownloadScreenContent(navController: NavController) {
     Column(
         modifier = Modifier
             .padding(20.dp)
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
     ) {
-        Text(text = "My List", fontWeight = FontWeight.Bold, fontSize = 30.sp, color = Color.LightGray, modifier = Modifier.padding(bottom = 10.dp, start = 15.dp))
+        Text(text = "Downloads", fontWeight = FontWeight.Bold, fontSize = 30.sp, color = Color.LightGray, modifier = Modifier.padding(bottom = 10.dp, start = 15.dp))
 
-        for (i in 0 until myList.size step 2) {
+        for (i in 0 until download.size step 2) {
             Row(modifier = Modifier
                 .height(150.dp)
                 .padding(10.dp)) {
@@ -117,7 +118,7 @@ fun MyListScreenContent(navController: NavController) {
                     color = Color.Transparent,
                     contentColor = Color.White,
                     onClick = {
-                        navController.navigate("movie-details/${myList[i]?.title}")
+                        navController.navigate("movie-details/${download[i]?.title}")
                     }
                 ) {
                     Column(
@@ -130,7 +131,7 @@ fun MyListScreenContent(navController: NavController) {
                             .fillMaxWidth()
                             .height(100.dp), shape = RoundedCornerShape(10.dp), color = Color.Gray) {
                             AsyncImage(
-                                model = myList[i]?.image,
+                                model = download[i]?.image,
                                 contentDescription = null,
                                 modifier = Modifier
                                     .fillMaxWidth(),
@@ -138,9 +139,9 @@ fun MyListScreenContent(navController: NavController) {
                             )
                         }
 
-                        myList[i]?.let {
+                        download[i]?.title?.let {
                             Text(
-                                text = it.title,
+                                text = it,
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Medium,
                                 overflow = TextOverflow.Ellipsis,
@@ -150,7 +151,7 @@ fun MyListScreenContent(navController: NavController) {
                     }
                 }
 
-                if (i + 1 < myList.size) {
+                if (i + 1 < download.size) {
                     Surface(
                         modifier = Modifier
                             .width(170.dp)
@@ -159,7 +160,7 @@ fun MyListScreenContent(navController: NavController) {
                         contentColor = Color.White,
                         shape = RoundedCornerShape(10.dp),
                         onClick = {
-                            navController.navigate("movie-details/${myList[i + 1]?.title}")
+                            navController.navigate("movie-details/${download[i + 1]?.title}")
                         }
                     ) {
                         Column(
@@ -172,7 +173,7 @@ fun MyListScreenContent(navController: NavController) {
                                 .fillMaxWidth()
                                 .height(100.dp), shape = RoundedCornerShape(10.dp), color = Color.Gray) {
                                 AsyncImage(
-                                    model = myList[i + 1]?.image,
+                                    model = download[i + 1]?.image,
                                     contentDescription = null,
                                     modifier = Modifier
                                         .fillMaxWidth(),
@@ -180,7 +181,7 @@ fun MyListScreenContent(navController: NavController) {
                                 )
                             }
 
-                            myList[i + 1]?.let {
+                            download[i + 1]?.let {
                                 Text(
                                     text = it.title,
                                     fontSize = 15.sp,
