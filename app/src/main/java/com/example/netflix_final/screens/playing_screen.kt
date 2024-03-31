@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
@@ -32,6 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
@@ -53,6 +56,36 @@ fun PlayingScreen(navController: NavController, movie: MovieModel) {
             .aspectRatio(16f / 9f)
         ) {
             AsyncImage(model = movie.image, contentDescription = null, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(6.dp), verticalArrangement = Arrangement.Bottom) {
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Text(text = "35:35", fontSize = 11.sp)
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(text = "-35:35", fontSize = 11.sp)
+                }
+                Box(contentAlignment = Alignment.BottomCenter) {
+                    Row(modifier = Modifier.height(5.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Box(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(Color.White))
+                    }
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(5.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Box(modifier = Modifier
+                            .width(100.dp)
+                            .height(1.dp)
+                            .background(Color.Red)
+                        )
+                        Box(modifier = Modifier
+                            .size(5.dp)
+                            .background(Color.Red, shape = CircleShape))
+                    }
+                }
+            }
         }
         Box(modifier = Modifier.padding(10.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {

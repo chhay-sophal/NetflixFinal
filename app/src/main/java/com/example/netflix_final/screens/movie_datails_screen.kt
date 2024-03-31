@@ -83,6 +83,16 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
         }
     }
 
+    val topAppBarTitle by remember {
+        derivedStateOf {
+            if (verticalScrollState.value > 1400) {
+                movie.title
+            } else {
+                ""
+            }
+        }
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -94,7 +104,7 @@ fun MovieDetailsScreen(navController: NavController, movie: MovieModel) {
                     }
                 },
                 title = {
-                    Text(text = movie.title, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.LightGray)
+                    Text(text = topAppBarTitle, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.LightGray)
                 },
                 colors = topAppBarColors(
                     containerColor = topAppBarContainerColor,
