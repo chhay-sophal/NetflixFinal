@@ -49,6 +49,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.netflix_final.components.ComposableBottomAppBar
+import com.example.netflix_final.components.ComposableTopAppBar
 import com.example.netflix_final.models.anime
 import com.example.netflix_final.models.continueWatching
 import com.example.netflix_final.models.featureMovies
@@ -75,23 +76,7 @@ fun SelectionScreen(navController: NavController, selection: String) {
 
     Scaffold(
         bottomBar = { ComposableBottomAppBar(navController) },
-        topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = { navController.navigateUp() }) {
-                        Icon(Icons.Rounded.KeyboardArrowLeft, contentDescription = "Back", modifier = Modifier.size(40.dp))
-                    }
-                },
-                title = { Text(text = titleText ) },
-                colors = topAppBarColors(
-                    containerColor = Color.Black,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White,
-                    actionIconContentColor = Color.White,
-                ),
-                actions = { },
-            )
-        },
+        topBar = { ComposableTopAppBar(navController = navController, titleText = titleText) },
     ){ paddingValues ->
         Surface(
             modifier = Modifier
